@@ -13,6 +13,9 @@
                         <img src="{$Image.FillMax(320,240).URL}" alt="<% if $Title %>{$Title.XML}<% end_if %>" width="320" height="240">
                     </a>
                 </div>
+                <div>
+                    $Description
+                </div>
             <% end_loop %>
         </div>
     <% end_if %>
