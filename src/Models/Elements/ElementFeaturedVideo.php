@@ -7,6 +7,7 @@ use SilverStripe\Assets\Image;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\OptionsetField;
 use gorriecoe\Link\Models\Link;
 use gorriecoe\LinkField\LinkField;
 
@@ -33,7 +34,8 @@ class ElementFeaturedVideo extends ElementContent {
     }
 
     private static $db = [
-        'Video' => 'Varchar',
+        'Video' => 'Varchar(255)',
+        'Provider' => 'Varchar',
         'Width' => 'Int',
         'Height' => 'Int'
 
@@ -93,6 +95,14 @@ class ElementFeaturedVideo extends ElementContent {
 
                 $fields->addFieldsToTab(
                     'Root.Main', [
+                        OptionsetField::create(
+                            'Provider',
+                            _t(__CLASS__ . '.PROVIDER', 'Video provider'),
+                            [
+                                'youtube' => 'YouTube',
+                                'vimeo' => 'Vimeo'
+                            ]
+                        ),
                         TextField::create(
                             'Video',
                             _t(

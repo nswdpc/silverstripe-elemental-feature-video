@@ -7,6 +7,7 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
+use SilverStripe\Forms\OptionsetField;
 
 use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 
@@ -28,7 +29,8 @@ class GalleryVideo extends DataObject {
 
     private static $db = [
         'Title' => 'Varchar(255)',
-        'Video' => 'Varchar',
+        'Video' => 'Varchar(255)',
+        'Provider' => 'Varchar',
         'Description' => 'Text',
         'Sort' => 'Int'
     ];
@@ -67,6 +69,14 @@ class GalleryVideo extends DataObject {
 
         $fields->addFieldsToTab(
             'Root.Main', [
+                OptionsetField::create(
+                    'Provider',
+                    _t(__CLASS__ . '.PROVIDER', 'Video provider'),
+                    [
+                        'youtube' => 'YouTube',
+                        'vimeo' => 'Vimeo'
+                    ]
+                ),
                 TextField::create(
                     'Video',
                     _t(
