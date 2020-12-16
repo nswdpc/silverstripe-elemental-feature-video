@@ -8,6 +8,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\OptionsetField;
+use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use gorriecoe\Link\Models\Link;
 use gorriecoe\LinkField\LinkField;
 
@@ -37,7 +38,8 @@ class ElementFeaturedVideo extends ElementContent {
         'Video' => 'Varchar(255)',
         'Provider' => 'Varchar',
         'Width' => 'Int',
-        'Height' => 'Int'
+        'Height' => 'Int',
+        'Transcript' => 'HTMLText',
 
     ];
 
@@ -141,6 +143,13 @@ class ElementFeaturedVideo extends ElementContent {
                                 __CLASS__ . 'ALLOWED_FILE_TYPES',
                                 'Allowed file types: %s'
                             ), implode(",", $this->getAllowedFileTypes()))
+                        ),
+                        HTMLEditorField::create(
+                            'Transcript',
+                            _t(
+                                __CLASS__ . '.TRANSCRIPT',
+                                'Transcript of video'
+                            )
                         )
                     ]
                 );

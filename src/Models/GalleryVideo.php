@@ -8,7 +8,7 @@ use SilverStripe\Assets\Image;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
-
+use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 
 /**
@@ -32,7 +32,8 @@ class GalleryVideo extends DataObject {
         'Video' => 'Varchar(255)',
         'Provider' => 'Varchar',
         'Description' => 'Text',
-        'Sort' => 'Int'
+        'Sort' => 'Int',
+        'Transcript' => 'HTMLText',
     ];
 
     private static $has_one = [
@@ -102,6 +103,13 @@ class GalleryVideo extends DataObject {
                         __CLASS__ . 'ALLOWED_FILE_TYPES',
                         'Allowed file types: %s'
                     ), implode(",", $this->getAllowedFileTypes()))
+                ),
+                HTMLEditorField::create(
+                    'Transcript',
+                    _t(
+                        __CLASS__ . '.TRANSCRIPT',
+                        'Transcript of video'
+                    )
                 )
             ]
         );
