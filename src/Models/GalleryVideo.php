@@ -9,6 +9,8 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use gorriecoe\Link\Models\Link;
+use gorriecoe\LinkField\LinkField;
 use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 
 /**
@@ -39,6 +41,7 @@ class GalleryVideo extends DataObject {
     private static $has_one = [
         'Image' => Image::class,
         'Parent' => ElementVideoGallery::class,
+        'LinkTarget' => Link::class
     ];
 
     private static $summary_fields = [
@@ -66,7 +69,7 @@ class GalleryVideo extends DataObject {
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        $fields->removeByName(['LinkID', 'ParentID', 'Sort']);
+        $fields->removeByName(['LinkTargetID', 'ParentID', 'Sort']);
 
         $fields->addFieldsToTab(
             'Root.Main', [
@@ -110,6 +113,13 @@ class GalleryVideo extends DataObject {
                         __CLASS__ . '.TRANSCRIPT',
                         'Transcript of video'
                     )
+                ),
+                LinkField::create(
+                    'LinkTarget',
+                    _t(
+                        __CLASS__ . 'LINKTARGET', 'Link'
+                    ),
+                    $this
                 )
             ]
         );

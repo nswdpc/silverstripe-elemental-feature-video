@@ -11,6 +11,7 @@ use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
@@ -37,6 +38,7 @@ class ElementVideoGallery extends ElementContent {
     }
 
     private static $db = [
+        'GalleryStyle' => 'Varchar'
     ];
 
     private static $has_one = [
@@ -54,21 +56,35 @@ class ElementVideoGallery extends ElementContent {
     {
         $this->beforeUpdateCMSFields(function($fields)
         {
-                $fields->removeByName(['Videos']);
+            $fields->removeByName(['Videos']);
 
-                if ($this->isInDB()) {
-                    $fields->addFieldToTab(
-                        'Root.Main',
-                        GridField::create(
-                            'Videos',
-                            _t(
-                                __CLASS__ . 'SLIDES', 'Videos'
-                            ),
-                            $this->Videos(), $config = GridFieldConfig_RecordEditor::create()
-                        )
-                    );
-                    $config->addComponent(GridFieldOrderableRows::create());
-                }
+            if ($this->isInDB()) {
+                $fields->addFieldToTab(
+                    'Root.Main',
+                    GridField::create(
+                        'Videos',
+                        _t(
+                            __CLASS__ . 'SLIDES', 'Videos'
+                        ),
+                        $this->Videos(), $config = GridFieldConfig_RecordEditor::create()
+                    )
+                );
+                $config->addComponent(GridFieldOrderableRows::create());
+            }
+
+            $fields->addFieldsToTab(
+                'Root.Settings', [
+                    DropdownField::create(
+                        "GalleryStyle",
+                        _t(__CLASS__ . ".STYLE", "Gallery style"),
+                        [
+                            "default" => "Default style",
+                            "card" => "Cards with links",
+                        ]
+                    )
+                ]
+            );
+
 
             });
         return parent::getCMSFields();
