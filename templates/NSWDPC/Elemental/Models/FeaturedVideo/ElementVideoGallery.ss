@@ -10,7 +10,7 @@
             <% loop $SortedVideos %>
                 <div>
                     <a<% if $Title %> title="{$Title.XML}"<% end_if %> href="https://www.youtube.com/watch?v={$Video}">
-                        <img src="{$Image.FillMax(320,240).URL}" alt="<% if $Title %>{$Title.XML}<% end_if %>" width="320" height="240">
+                        <img src="{$Image.FillMax(320,240).URL}" alt="<% if $Title %>{$Title.XML}<% end_if %>" width="320" height="240" loading="lazy">
                     </a>
                 </div>
                 <div>
