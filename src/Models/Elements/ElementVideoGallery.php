@@ -41,9 +41,6 @@ class ElementVideoGallery extends ElementContent {
         'GalleryStyle' => 'Varchar'
     ];
 
-    private static $has_one = [
-    ];
-
     private static $has_many = [
         'Videos' => GalleryVideo::class,
     ];
