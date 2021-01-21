@@ -39,8 +39,7 @@ class ElementFeaturedVideo extends ElementContent {
         'Provider' => 'Varchar',
         'Width' => 'Int',
         'Height' => 'Int',
-        'Transcript' => 'HTMLText',
-
+        'Transcript' => 'HTMLText'
     ];
 
     private static $has_one = [
@@ -99,65 +98,65 @@ class ElementFeaturedVideo extends ElementContent {
     {
         $this->beforeUpdateCMSFields(function($fields)
         {
-                $fields->removeByName(['FeatureLinkID']);
+            $fields->removeByName(['FeatureLinkID']);
 
-                $fields->addFieldsToTab(
-                    'Root.Main', [
-                        OptionsetField::create(
-                            'Provider',
-                            _t(__CLASS__ . '.PROVIDER', 'Video provider'),
-                            $this->getVideoProviders()
-                        ),
-                        TextField::create(
-                            'Video',
-                            _t(
-                                __CLASS__ . 'VideoID', 'Video ID'
-                            )
-                        ),
-                        LinkField::create(
-                            'FeatureLink',
-                            _t(
-                                __CLASS__ . 'LINK', 'Link'
-                            ),
-                            $this->owner
-                        ),
-                        NumericField::create(
-                            'Width',
-                            _t(
-                                __CLASS__ . 'WIDTH', 'Thumbnail width'
-                            )
-                        ),
-                        NumericField::create(
-                            'Height',
-                            _t(
-                                __CLASS__ . 'WIDTH', 'Thumbnail height'
-                            )
-                        ),
-                        UploadField::create(
-                            'Image',
-                            _t(
-                                __CLASS__ . '.SLIDE_IMAGE',
-                                'Image'
-                            )
-                        )->setFolderName('videos/' . $this->ID)
-                        ->setAllowedExtensions($this->getAllowedFileTypes())
-                        ->setDescription(
-                            sprintf(_t(
-                                __CLASS__ . 'ALLOWED_FILE_TYPES',
-                                'Allowed file types: %s'
-                            ), implode(",", $this->getAllowedFileTypes()))
-                        ),
-                        HTMLEditorField::create(
-                            'Transcript',
-                            _t(
-                                __CLASS__ . '.TRANSCRIPT',
-                                'Transcript of video'
-                            )
+            $fields->addFieldsToTab(
+                'Root.Main', [
+                    OptionsetField::create(
+                        'Provider',
+                        _t(__CLASS__ . '.PROVIDER', 'Video provider'),
+                        $this->getVideoProviders()
+                    ),
+                    TextField::create(
+                        'Video',
+                        _t(
+                            __CLASS__ . 'VideoID', 'Video ID'
                         )
-                    ]
-                );
+                    ),
+                    LinkField::create(
+                        'FeatureLink',
+                        _t(
+                            __CLASS__ . 'LINK', 'Link'
+                        ),
+                        $this->owner
+                    ),
+                    NumericField::create(
+                        'Width',
+                        _t(
+                            __CLASS__ . 'WIDTH', 'Thumbnail width'
+                        )
+                    ),
+                    NumericField::create(
+                        'Height',
+                        _t(
+                            __CLASS__ . 'WIDTH', 'Thumbnail height'
+                        )
+                    ),
+                    UploadField::create(
+                        'Image',
+                        _t(
+                            __CLASS__ . '.SLIDE_IMAGE',
+                            'Image'
+                        )
+                    )->setFolderName('videos/' . $this->ID)
+                    ->setAllowedExtensions($this->getAllowedFileTypes())
+                    ->setDescription(
+                        sprintf(_t(
+                            __CLASS__ . 'ALLOWED_FILE_TYPES',
+                            'Allowed file types: %s'
+                        ), implode(",", $this->getAllowedFileTypes()))
+                    ),
+                    HTMLEditorField::create(
+                        'Transcript',
+                        _t(
+                            __CLASS__ . '.TRANSCRIPT',
+                            'Transcript of video'
+                        )
+                    )
+                ]
+            );
 
-            });
+        });
         return parent::getCMSFields();
     }
 
