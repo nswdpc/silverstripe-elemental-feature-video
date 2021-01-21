@@ -7,7 +7,7 @@ use gorriecoe\Link\Models\Link;
 use gorriecoe\LinkField\LinkField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\CheckboxField;
@@ -66,7 +66,7 @@ class ElementVideoGallery extends ElementContent {
                         _t(
                             __CLASS__ . 'SLIDES', 'Videos'
                         ),
-                        $this->Videos(), $config = GridFieldConfig_RecordEditor::create()
+                        $this->Videos(), $config = GridFieldConfig_RelationEditor::create()
                     )
                 );
                 $config->addComponent(GridFieldOrderableRows::create());
@@ -86,7 +86,7 @@ class ElementVideoGallery extends ElementContent {
             );
 
 
-            });
+        });
         return parent::getCMSFields();
     }
 
