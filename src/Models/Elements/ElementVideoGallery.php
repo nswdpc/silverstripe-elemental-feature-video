@@ -54,40 +54,36 @@ class ElementVideoGallery extends ElementContent {
 
     public function getCMSFields()
     {
-        $this->beforeUpdateCMSFields(function($fields)
-        {
-            $fields->removeByName(['Videos']);
 
-            if ($this->isInDB()) {
-                $fields->addFieldToTab(
-                    'Root.Main',
-                    GridField::create(
-                        'Videos',
-                        _t(
-                            __CLASS__ . 'SLIDES', 'Videos'
-                        ),
-                        $this->Videos(), $config = GridFieldConfig_RelationEditor::create()
-                    )
-                );
-                $config->addComponent(GridFieldOrderableRows::create());
-            }
+        $fields = parent::getCmsFields();
 
-            $fields->addFieldsToTab(
-                'Root.Settings', [
-                    DropdownField::create(
-                        "GalleryStyle",
-                        _t(__CLASS__ . ".STYLE", "Gallery style"),
-                        [
-                            "default" => "Default style",
-                            "card" => "Cards with links",
-                        ]
-                    )
-                ]
-            );
+        $fields->addFieldToTab(
+            'Root.Videos',
+            GridField::create(
+                'Videos',
+                _t(
+                    __CLASS__ . '.VIDEOS', 'Videos'
+                ),
+                $this->Videos(),
+                $config = GridFieldConfig_RelationEditor::create()
+            )
+        );
+        $config->addComponent(GridFieldOrderableRows::create());
 
+        $fields->addFieldsToTab(
+            'Root.Settings', [
+                DropdownField::create(
+                    "GalleryStyle",
+                    _t(__CLASS__ . ".STYLE", "Gallery style"),
+                    [
+                        "default" => "Default style",
+                        "card" => "Cards with links",
+                    ]
+                )
+            ]
+        );
 
-        });
-        return parent::getCMSFields();
+        return $fields;
     }
 
 
