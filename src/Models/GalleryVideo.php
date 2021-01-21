@@ -111,10 +111,13 @@ class GalleryVideo extends DataObject {
                 )->setFolderName('videos/' . $this->ID)
                 ->setAllowedExtensions($this->getAllowedFileTypes())
                 ->setDescription(
-                    sprintf(_t(
+                    _t(
                         __CLASS__ . 'ALLOWED_FILE_TYPES',
-                        'Allowed file types: %s'
-                    ), implode(",", $this->getAllowedFileTypes()))
+                        'Allowed file types: {types}',
+                        [
+                            'types' => implode(",", $this->getAllowedFileTypes())
+                        ]
+                    )
                 ),
                 HTMLEditorField::create(
                     'Transcript',
