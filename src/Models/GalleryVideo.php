@@ -29,6 +29,8 @@ class GalleryVideo extends DataObject {
 
     private static $allowed_file_types = ["jpg","jpeg","gif","png","webp"];
 
+    private static $folder_name = 'videos';
+
     const PROVIDER_VIMEO = 'vimeo';
     const PROVIDER_YOUTUBE = 'youtube';
 
@@ -50,6 +52,15 @@ class GalleryVideo extends DataObject {
     private static $summary_fields = [
         'Image.CMSThumbnail' => 'Image',
         'Title' => 'Title',
+        'Video' => 'Video Id',
+        'Provider' => 'Provider'
+    ];
+
+    private static $searchable_fields = [
+        'Title' => 'PartialMatchFilter',
+        'Video' => 'PartialMatchFilter',
+        'Provider' => 'PartialMatchFilter',
+        'Description' => 'PartialMatchFilter'
     ];
 
     private static $owns = [
@@ -76,6 +87,14 @@ class GalleryVideo extends DataObject {
         ];
         $this->extend('updateVideoProviders', $list);
         return $list;
+    }
+
+    public function getFolderName() {
+        $folder_name = $this->config()->get('folder_name');
+        if(!$folder_name) {
+            $folder_name = "videos";
+        }
+        return $folder_name;
     }
 
     public function getCMSFields() {
@@ -108,7 +127,7 @@ class GalleryVideo extends DataObject {
                         __CLASS__ . '.SLIDE_IMAGE',
                         'Image'
                     )
-                )->setFolderName('videos/' . $this->ID)
+                )->setFolderName( $this->getFolderName() . '/' . $this->ID)
                 ->setAllowedExtensions($this->getAllowedFileTypes())
                 ->setDescription(
                     _t(

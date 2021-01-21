@@ -1,3 +1,11 @@
 ---
 Name: nswdpc-elemental-feature-video
 ---
+NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo:
+  folder_name: 'videos'
+  allowed_file_types:
+    - 'jpg'
+    - 'jpeg'
+    - 'gif'
+    - 'png'
+    - 'webp'
