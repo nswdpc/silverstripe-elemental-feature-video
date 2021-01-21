@@ -1,13 +1,22 @@
-# Featured video element for Silverstripe
-Simple featured video
+# Video elements for Silverstripe
 
-## Requirements
+This module provides two content elements for us in an elemental area
 
-See composer.json
++ Featured video - a single video that can store  a video ID and provider
++ Video gallery - a gallery of videos
+
+## Features
+
++ Vimeo and YouTube support, you can extend the elements to provide for other video sources
++ Basic templates, override these in your own project
++ Transcript, description, link fields
++ Image thumbnails for video placeholders
 
 ## Installation
 
-```composer require nswdpc/silverstripe-elemental-feature-video```
+```
+composer require nswdpc/silverstripe-elemental-feature-video
+```
 
 ## License
 
