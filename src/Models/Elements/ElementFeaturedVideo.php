@@ -89,6 +89,12 @@ class ElementFeaturedVideo extends ElementContent {
         $this->Height = $this->getThumbHeight();
     }
 
+
+    public function getVideoProviders() {
+        $inst = new GalleryVideo();
+        return $inst->getVideoProviders();
+    }
+
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function($fields)
@@ -100,10 +106,7 @@ class ElementFeaturedVideo extends ElementContent {
                         OptionsetField::create(
                             'Provider',
                             _t(__CLASS__ . '.PROVIDER', 'Video provider'),
-                            [
-                                'youtube' => 'YouTube',
-                                'vimeo' => 'Vimeo'
-                            ]
+                            $this->getVideoProviders()
                         ),
                         TextField::create(
                             'Video',

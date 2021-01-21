@@ -29,6 +29,9 @@ class GalleryVideo extends DataObject {
 
     private static $allowed_file_types = ["jpg","jpeg","gif","png","webp"];
 
+    const PROVIDER_VIMEO = 'vimeo';
+    const PROVIDER_YOUTUBE = 'youtube';
+
     private static $db = [
         'Title' => 'Varchar(255)',
         'Video' => 'Varchar(255)',
@@ -66,6 +69,15 @@ class GalleryVideo extends DataObject {
         return $types;
     }
 
+    public function getVideoProviders() {
+        $list = [
+            self::PROVIDER_VIMEO => _t(__CLASS__ . '.PROVIDER_VIMEO', 'Vimeo'),
+            self::PROVIDER_YOUTUBE => _t(__CLASS__ . '.PROVIDER_YOUTUBE', 'YouTube'),
+        ];
+        $this->extend('updateVideoProviders', $list);
+        return $list;
+    }
+
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
@@ -76,10 +88,7 @@ class GalleryVideo extends DataObject {
                 OptionsetField::create(
                     'Provider',
                     _t(__CLASS__ . '.PROVIDER', 'Video provider'),
-                    [
-                        'youtube' => 'YouTube',
-                        'vimeo' => 'Vimeo'
-                    ]
+                    $this->getVideoProviders()
                 ),
                 TextField::create(
                     'Video',
