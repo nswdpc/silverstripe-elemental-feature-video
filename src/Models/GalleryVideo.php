@@ -112,7 +112,7 @@ class GalleryVideo extends DataObject {
                 TextField::create(
                     'Video',
                     _t(
-                        __CLASS__ . 'VIDEO', 'Video'
+                        __CLASS__ . 'VIDEO', 'Video ID'
                     )
                 )->setDescription("Use the video ID only, e.g.; https://www.youtube.com/watch?v=<strong>oJL-lCzEXgI</strong>"),
                 TextareaField::create(
