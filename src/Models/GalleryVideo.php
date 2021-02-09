@@ -1,10 +1,12 @@
 <?php
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
+use SilverStripe\Control\Controller;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
@@ -51,6 +53,7 @@ class GalleryVideo extends DataObject {
 
     private static $summary_fields = [
         'Image.CMSThumbnail' => 'Image',
+        'Parent.DropdownTitle' => 'Gallery',
         'Title' => 'Title',
         'Video' => 'Video Id',
         'Provider' => 'Provider'
@@ -100,7 +103,21 @@ class GalleryVideo extends DataObject {
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        $fields->removeByName(['LinkTargetID', 'ParentID', 'Sort']);
+        $fields->removeByName(['LinkTargetID', 'Sort']);
+
+        if(Controller::curr() instanceof VideoAdmin) {
+            $fields->addFieldToTab(
+                'Root.Main',
+                DropdownField::create(
+                    'ParentID',
+                    _t(__CLASS__ . '.GALLERY', 'Gallery'),
+                    ElementVideoGallery::get()
+                        ->sort('Title ASC')
+                        ->map("ID","DropdownTitle")
+                )->setEmptyString(''),
+                'Video'
+            );
+        }
 
         $fields->addFieldsToTab(
             'Root.Main', [
