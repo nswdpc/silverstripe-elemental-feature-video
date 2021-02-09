@@ -49,6 +49,14 @@ class ElementVideoGallery extends ElementContent {
         'Videos'
     ];
 
+    public function DropdownTitle() {
+        $title = $this->Title;
+        if(!$title) {
+            $title = $this->getType();
+        }
+        return "{$title} (#{$this->ID})";
+    }
+
     public function getCMSFields()
     {
 
