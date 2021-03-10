@@ -3,8 +3,6 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo;
 use DNADesign\Elemental\Models\ElementContent;
-use gorriecoe\Link\Models\Link;
-use gorriecoe\LinkField\LinkField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;

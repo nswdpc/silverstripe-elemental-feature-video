@@ -10,7 +10,7 @@ use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use gorriecoe\Link\Models\Link;
-use gorriecoe\LinkField\LinkField;
+use NSWDPC\InlineLinker\InlineLinkCompositeField;
 use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 
 /**
@@ -145,7 +145,7 @@ class GalleryVideo extends DataObject {
                         'Transcript of video'
                     )
                 ),
-                LinkField::create(
+                InlineLinkCompositeField::create(
                     'LinkTarget',
                     _t(
                         __CLASS__ . 'LINKTARGET', 'Link'

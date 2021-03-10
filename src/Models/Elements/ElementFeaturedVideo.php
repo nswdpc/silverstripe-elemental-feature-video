@@ -10,14 +10,12 @@ use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use gorriecoe\Link\Models\Link;
-use gorriecoe\LinkField\LinkField;
+use NSWDPC\InlineLinker\InlineLinkCompositeField;
 
 /**
  * ElementFeaturedVideo adds a featured video
  */
 class ElementFeaturedVideo extends ElementContent {
-
-    private static $inline_editable = false;
 
     private static $icon = 'font-icon-block-banner';
 
@@ -113,7 +111,7 @@ class ElementFeaturedVideo extends ElementContent {
                             __CLASS__ . 'VideoID', 'Video ID'
                         )
                     ),
-                    LinkField::create(
+                    InlineLinkCompositeField::create(
                         'FeatureLink',
                         _t(
                             __CLASS__ . 'LINK', 'Link'
