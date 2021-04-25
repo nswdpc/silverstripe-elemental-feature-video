@@ -25,6 +25,7 @@
         "symbiote/silverstripe-gridfieldextensions" : "^3",
         "dnadesign/silverstripe-elemental": "^4.3.0",
         "gorriecoe/silverstripe-linkfield" : "^1",
+        "gorriecoe/silverstripe-embed" : "^1",
         "silverstripe/assets" : "^1",
         "silverstripe/asset-admin" : "^1",
         "silverstripe/versioned": "^1",
