@@ -5,6 +5,7 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 use DNADesign\Elemental\Models\BaseElement;
 use gorriecoe\Embed\Extensions\Embeddable;
 use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 
 
@@ -20,6 +21,7 @@ class ElementVideo extends BaseElement
     private static $plural_name = 'videos';
 
     private static $db = [
+        'Caption' => 'Text',
         'AltVideoURL' => 'Varchar(1024)',
         'Transcript' => 'HTMLText'
     ];
@@ -53,7 +55,7 @@ class ElementVideo extends BaseElement
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->removeByName(['EmbedImage', 'EmbedDescription']);
+        $fields->removeByName(['EmbedTitle', 'EmbedImage', 'EmbedDescription']);
 
         $fields->insertAfter(
             'EmbedSourceURL',
@@ -64,6 +66,7 @@ class ElementVideo extends BaseElement
                     'Transcript of video'
                 )
             )
+            ->setRows(12)
         );
 
         $fields->insertAfter(
@@ -75,7 +78,17 @@ class ElementVideo extends BaseElement
                     'Alternate video with audio captions enabled'
                 )
             )
+            ->setDescription('Specify a external URL')
         );
+
+        $fields->insertAfter(
+            'EmbedSourceURL',
+            TextareaField::create(
+                'Caption',
+                'Caption'
+            )
+        );
+
 
         return $fields;
     }
