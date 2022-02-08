@@ -47,12 +47,29 @@ class ElementVideoGallery extends ElementContent {
         'Videos'
     ];
 
-    public function DropdownTitle() {
+    /**
+     * Return a title for a dropdown to assist in identifying this gallery
+     * @return string
+     */
+    public function DropdownTitle() : string {
         $title = $this->Title;
         if(!$title) {
             $title = $this->getType();
         }
-        return "{$title} (#{$this->ID})";
+        $page = $this->getPage();
+        $suffix = "";
+        if($page && $page->exists()) {
+            $suffix = " - ";
+            $suffix .= _t(
+                 __CLASS__ . ".ON_PAGE_TITLE",
+                 "on {pageType} '{pageTitle}'",
+                 [
+                     'pageType' => strtolower($page->i18n_singular_name()),
+                     'pageTitle' => $page->Title
+                 ]
+            );
+        }
+        return "{$title} (#{$this->ID}){$suffix}";
     }
 
     public function getCMSFields()

@@ -110,10 +110,15 @@ class GalleryVideo extends DataObject {
                 'Root.Main',
                 DropdownField::create(
                     'ParentID',
-                    _t(__CLASS__ . '.GALLERY', 'Gallery'),
+                    _t(__CLASS__ . '.CHOOSE_A_GALLERY', 'Choose a video gallery'),
                     ElementVideoGallery::get()
                         ->sort('Title ASC')
                         ->map("ID","DropdownTitle")
+                )->setDescription(
+                    _t(
+                        __CLASS__ . '.CHOOSE_A_GALLERY_DESCRIPTION',
+                        'Changing the gallery will move the video to that gallery'
+                    ),
                 )->setEmptyString(''),
                 'Video'
             );
