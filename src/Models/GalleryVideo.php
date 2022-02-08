@@ -103,7 +103,7 @@ class GalleryVideo extends DataObject {
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        $fields->removeByName(['LinkTargetID', 'Sort']);
+        $fields->removeByName(['ParentID', 'LinkTargetID', 'Sort']);
 
         if(Controller::curr() instanceof VideoAdmin) {
             $fields->addFieldToTab(
