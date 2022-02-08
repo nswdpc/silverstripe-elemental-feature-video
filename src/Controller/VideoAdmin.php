@@ -10,13 +10,31 @@ use SilverStripe\Admin\ModelAdmin;
  */
 class VideoAdmin extends ModelAdmin
 {
+    /**
+     * @var string
+     */
     private static $url_segment = 'gallery-video';
-    private static $menu_title = 'Video';
+
+    /**
+     * @var string
+     */
+    private static $menu_title = 'Videos';
+
+    /**
+     * @var string
+     */
     private static $menu_icon_class = 'font-icon-block-media';
+
+    /**
+     * @var array
+     */
     private static $managed_models = [
         GalleryVideo::class
     ];
 
+    /**
+     * @return DataList
+     */
     public function getList()
     {
         $list = parent::getList();
