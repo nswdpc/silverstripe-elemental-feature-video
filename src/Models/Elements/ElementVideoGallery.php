@@ -18,7 +18,7 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  */
 class ElementVideoGallery extends ElementContent {
 
-    private static $icon = 'font-icon-block-banner';
+    private static $icon = 'font-icon-thumbnails';
 
     private static $inline_editable = false;
 

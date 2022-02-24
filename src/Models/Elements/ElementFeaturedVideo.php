@@ -17,7 +17,7 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
  */
 class ElementFeaturedVideo extends ElementContent {
 
-    private static $icon = 'font-icon-block-banner';
+    private static $icon = 'font-icon-block-media';
 
     private static $table_name = 'ElementFeaturedVideo';
 

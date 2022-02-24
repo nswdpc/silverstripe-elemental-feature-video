@@ -14,7 +14,7 @@ class ElementVideo extends BaseElement
 
     private static $table_name = 'ElementVideo';
 
-    private static $icon = 'font-icon-block-banner';
+    private static $icon = 'font-icon-block-media';
 
     private static $singular_name = 'video';
 
