@@ -20,22 +20,54 @@ use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
  */
 class GalleryVideo extends DataObject {
 
+    /**
+     * @var string
+     */
     private static $table_name = 'GalleryVideo';
 
+    /**
+     * @var string
+     */
     private static $versioned_gridfield_extensions = true;
 
+    /**
+     * @var string
+     */
     private static $singular_name = 'Video';
+
+    /**
+     * @var string
+     */
     private static $plural_name = 'Videos';
 
+    /**
+     * @var string
+     */
     private static $default_sort = 'Sort';
 
+    /**
+     * @var array
+     */
     private static $allowed_file_types = ["jpg","jpeg","gif","png","webp"];
 
+    /**
+     * @var string
+     */
     private static $folder_name = 'videos';
 
+    /**
+     * @var string
+     */
     const PROVIDER_VIMEO = 'vimeo';
+
+    /**
+     * @var string
+     */
     const PROVIDER_YOUTUBE = 'youtube';
 
+    /**
+     * @var array
+     */
     private static $db = [
         'Title' => 'Varchar(255)',
         'Video' => 'Varchar(255)',
@@ -45,12 +77,18 @@ class GalleryVideo extends DataObject {
         'Transcript' => 'HTMLText',
     ];
 
+    /**
+     * @var array
+     */
     private static $has_one = [
         'Image' => Image::class,
         'Parent' => ElementVideoGallery::class,
         'LinkTarget' => Link::class
     ];
 
+    /**
+     * @var array
+     */
     private static $summary_fields = [
         'Image.CMSThumbnail' => 'Image',
         'Parent.DropdownTitle' => 'Gallery',
@@ -59,6 +97,9 @@ class GalleryVideo extends DataObject {
         'Provider' => 'Provider'
     ];
 
+    /**
+     * @var array
+     */
     private static $searchable_fields = [
         'Title' => 'PartialMatchFilter',
         'Video' => 'PartialMatchFilter',
@@ -66,15 +107,24 @@ class GalleryVideo extends DataObject {
         'Description' => 'PartialMatchFilter'
     ];
 
+    /**
+     * @var array
+     */
     private static $owns = [
         'Image'
     ];
 
+    /**
+     * @var array
+     */
     private static $extensions = [
         Versioned::class
     ];
 
-    public function getAllowedFileTypes() {
+    /**
+     * Allowed file types for the video image
+     */
+    public function getAllowedFileTypes() : array {
         $types = $this->config()->get('allowed_file_types');
         if(empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
@@ -83,7 +133,10 @@ class GalleryVideo extends DataObject {
         return $types;
     }
 
-    public function getVideoProviders() {
+    /**
+     * Allowed file types for the video image
+     */
+    public function getVideoProviders() : array {
         $list = [
             self::PROVIDER_VIMEO => _t(__CLASS__ . '.PROVIDER_VIMEO', 'Vimeo'),
             self::PROVIDER_YOUTUBE => _t(__CLASS__ . '.PROVIDER_YOUTUBE', 'YouTube'),
@@ -92,7 +145,10 @@ class GalleryVideo extends DataObject {
         return $list;
     }
 
-    public function getFolderName() {
+    /**
+     * Folder name for uploaded thumbnails
+     */
+    public function getFolderName() : string {
         $folder_name = $this->config()->get('folder_name');
         if(!$folder_name) {
             $folder_name = "videos";
@@ -100,6 +156,10 @@ class GalleryVideo extends DataObject {
         return $folder_name;
     }
 
+    /**
+     * CMS fields for video management
+     *
+     */
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
@@ -180,10 +240,17 @@ class GalleryVideo extends DataObject {
         return $fields;
     }
 
+    /**
+     * Title for symbiote/silverstripe-multirecordfield
+     * @return string
+     */
     public function getMultiRecordEditingTitle() {
         return $this->singular_name();
     }
 
+    /**
+     * Render this record into a template
+     */
     public function forTemplate() {
         return $this->renderWith([$this->class, __CLASS__]);
     }
