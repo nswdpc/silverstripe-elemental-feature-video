@@ -10,6 +10,7 @@ use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
@@ -35,17 +36,34 @@ class ElementVideoGallery extends ElementContent {
         return _t(__CLASS__ . '.BlockType', 'Video gallery');
     }
 
+    /**
+     * @var array
+     */
     private static $db = [
-        'GalleryStyle' => 'Varchar'
+        'GalleryStyle' => 'Varchar',
+        'VideoHeight' => 'Int'
     ];
 
+    /**
+     * @var array
+     */
     private static $has_many = [
         'Videos' => GalleryVideo::class,
     ];
 
+    /**
+     * @var array
+     */
     private static $owns = [
         'Videos'
     ];
+
+    /**
+     * Save a default height based on the Gallery Video constant
+     */
+    public static function getDefaultHeight() : int {
+        return GalleryVideo::DEFAULT_HEIGHT;
+    }
 
     /**
      * Return a title for a dropdown to assist in identifying this gallery
@@ -90,8 +108,16 @@ class ElementVideoGallery extends ElementContent {
         );
         $config->addComponent(GridFieldOrderableRows::create());
 
+        $heightField = NumericField::create(
+            'VideoHeight',
+            _t(__CLASS__ . ".VIDEO_HEIGHT", "Apply a height to all videos in this gallery (pixels)")
+        );
+        if(!$this->exists()) {
+            $heightField = $heightField->setValue( self::getDefaultHeight() );
+        }
         $fields->addFieldsToTab(
             'Root.Settings', [
+                $heightField,
                 DropdownField::create(
                     "GalleryStyle",
                     _t(__CLASS__ . ".STYLE", "Gallery style"),
@@ -102,7 +128,6 @@ class ElementVideoGallery extends ElementContent {
                 )
             ]
         );
-
         return $fields;
     }
 
