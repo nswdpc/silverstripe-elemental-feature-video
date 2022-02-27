@@ -74,6 +74,11 @@ class GalleryVideo extends DataObject {
     const PROVIDER_YOUTUBE = 'youtube';
 
     /**
+     * @var string
+     */
+    const PROVIDER_YOUTUBE_NOCOOKIE = 'youtube-nocookie';
+
+    /**
      * @var array
      */
     private static $db = [

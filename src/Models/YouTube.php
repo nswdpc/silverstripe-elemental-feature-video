@@ -9,11 +9,6 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 class YouTube extends VideoProvider {
 
     /**
-     * @var bool
-     */
-    private static $use_nocookie = false;
-
-    /**
      * Return ident code for this video, used to load an instance of this class
      */
     public static function getProviderCode() : string {
@@ -34,11 +29,7 @@ class YouTube extends VideoProvider {
      * Return YouTube host for URL
      */
     public function getHost() : string {
-        if($this->config()->get('use_nocookie')) {
-            return "youtube-nocookie.com";
-        } else {
-            return "www.youtube.com";
-        }
+        return "www.youtube.com";
     }
 
     /**
