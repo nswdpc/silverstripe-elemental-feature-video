@@ -7,7 +7,9 @@ This module provides two content elements for us in an elemental area
 
 ## Features
 
-+ Vimeo and YouTube support, you can extend the elements to provide for other video sources
++ Vimeo, YouTube & YouTube Privacy Enhanced Mode support
++ Sensible defaults for embedded videos
++ Your developer can extend the abstract provider to enable other video sources
 + Basic templates, override these in your own project
 + Transcript, description, link fields
 + Image thumbnails for video placeholders
