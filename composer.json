@@ -21,6 +21,12 @@
             "role": "Developer"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "NSWDPC\\Elemental\\Models\\FeaturedVideo\\": "src/",
+            "NSWDPC\\Elemental\\Models\\FeaturedVideo\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "symbiote/silverstripe-gridfieldextensions" : "^3",
         "dnadesign/silverstripe-elemental": "^4.3.0",
