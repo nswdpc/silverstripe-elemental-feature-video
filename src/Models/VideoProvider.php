@@ -36,6 +36,8 @@ abstract class VideoProvider {
 
     abstract public function getEmbedURL(string $videoId, array $customQueryArgs, int $videoHeight) : string;
 
+    abstract public function getWatchURL(string $videoID, array $customQueryArgs) : string;
+
     /**
      * Return the available providers, subclasses of this class
      */
