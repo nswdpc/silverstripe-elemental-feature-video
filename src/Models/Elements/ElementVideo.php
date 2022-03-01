@@ -8,31 +8,71 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 
-
+/**
+ * Embed a video using the Embeddable extension and a URL from a supported provider
+ * Note (YouTube) that this element uses the standard YouTube domain for embedding a video
+ * @author James
+ * @author Mark
+ */
 class ElementVideo extends BaseElement
 {
 
+    /**
+     * @var string
+     */
     private static $table_name = 'ElementVideo';
 
+    /**
+     * @var string
+     */
     private static $icon = 'font-icon-block-media';
 
-    private static $singular_name = 'video';
+    /**
+     * @var string
+     */
+    private static $singular_name = 'Video via embed URL';
 
-    private static $plural_name = 'videos';
+    /**
+     * @var string
+     */
+    private static $plural_name = 'Videos via embed URL';
 
+
+    /**
+     * @var string
+     */
+    private static $title = 'Video via embed URL';
+
+    /**
+     * @var string
+     */
+    private static $description = "Display a video using an embed URL";
+
+    /**
+     * @var array
+     */
     private static $db = [
         'Caption' => 'Text',
         'AltVideoURL' => 'Varchar(1024)',
         'Transcript' => 'HTMLText'
     ];
 
+    /**
+     * @var string
+     */
     private static $embed_folder = 'Uploads/images';
 
+    /**
+     * Element type
+     */
     public function getType()
     {
-        return _t(__CLASS__ . '.BlockType', 'Video');
+        return _t(__CLASS__ . '.BlockType', 'Video (embed)');
     }
 
+    /**
+     * Embeddable
+     */
     private static $extensions = [
         Embeddable::class,
     ];
@@ -52,6 +92,9 @@ class ElementVideo extends BaseElement
     private static $embed_tab = 'Main';
 
 
+    /**
+     * CMS fields for editing
+     */
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
@@ -85,10 +128,12 @@ class ElementVideo extends BaseElement
             'EmbedSourceURL',
             TextareaField::create(
                 'Caption',
-                'Caption'
+                _t(
+                    __CLASS__ . '.CAPTION',
+                    'Caption'
+                )
             )
         );
-
 
         return $fields;
     }

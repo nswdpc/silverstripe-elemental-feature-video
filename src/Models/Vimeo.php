@@ -73,4 +73,16 @@ class Vimeo extends VideoProvider {
             . $this->getPath($videoID)
             . ($queryString ? "?{$queryString}" : "");
     }
+
+    /**
+     * Return off-site watch URL for the video
+     */
+    public function getWatchURL(string $videoID, array $customQueryArgs) : string {
+        $query = [];
+        $query = array_merge($query, $customQueryArgs);
+        $queryString = http_build_query($query);
+        $videoID = htmlspecialchars($videoID);
+        return "https://www.vimeo.com/{$videoID}"
+            . ($queryString ? "?{$queryString}" : "");
+    }
 }

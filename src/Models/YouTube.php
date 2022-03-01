@@ -67,4 +67,17 @@ class YouTube extends VideoProvider {
             . $this->getPath($videoID)
             . ($queryString ? "?{$queryString}" : "");
     }
+
+    /**
+     * Return off-site watch URL for the video
+     */
+    public function getWatchURL(string $videoID, array $customQueryArgs) : string {
+        $query = [
+            'rel' => 0,
+        ];
+        $query = array_merge($query, $customQueryArgs);
+        $query['v'] = $videoID;
+        $queryString = http_build_query($query);
+        return "https://www.youtube.com/watch?{$queryString}";
+    }
 }
