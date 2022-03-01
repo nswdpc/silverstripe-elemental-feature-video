@@ -20,9 +20,14 @@
 
         <% end_if %>
 
-            <% if $HTML %>
+            <% if $HTML || $FeatureLink %>
             <figcaption>
+                <% if $HTML %>
                 {$HTML}
+                <% end_if %>
+                <% if $FeatureLink %>
+                    <p><a href="{$FeatureLink.LinkURL}">{$FeatureLink.Title}</a></p>
+                <% end_if %>
             </figcaption>
             <% end_if %>
 
