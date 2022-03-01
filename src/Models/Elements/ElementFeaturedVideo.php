@@ -177,6 +177,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
+        $this->validateVideoCode($this->Video);
         $this->Width = $this->getThumbWidth();
         $this->Height = $this->getThumbHeight();
     }
