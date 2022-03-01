@@ -2,23 +2,53 @@
 
 namespace NSWDPC\Elemental\Models\FeaturedVideo\Tests;
 
-use NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo;
 use NSWDPC\Elemental\Models\FeaturedVideo\YouTube;
 use NSWDPC\Elemental\Models\FeaturedVideo\Vimeo;
 use NSWDPC\Elemental\Models\FeaturedVideo\YouTubeNoCookie;
 use NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider;
+use NSWDPC\Elemental\Models\FeaturedVideo\ElementFeaturedVideo;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\ORM\ValidationException;
 
 /**
- * Provide tests for a single gallery video
+ * Provide tests for element featured video
  */
-class GalleryVideoTest extends SapphireTest {
+class ElementFeaturedVideoTest extends SapphireTest {
+
+    public function testThumbWidthHeight() {
+        $video = ElementFeaturedVideo::create();
+        $video->Provider = YouTube::getProviderCode();
+        $video->Video = "testyoutube";
+        $video->Title = "YouTube Test";
+        $video->Description = "YouTube Description";
+        $video->Transcript = "<p>YouTube Transcript</p>";
+        $video->Width = 1201;
+        $video->Height = 603;
+        $video->write();
+
+        $this->assertEquals(1201, $video->getThumbWidth());
+        $this->assertEquals(603, $video->getThumbHeight());
+    }
+
+    public function testDefaultThumbWidthHeight() {
+        $video = ElementFeaturedVideo::create();
+        $video->Provider = YouTube::getProviderCode();
+        $video->Video = "testyoutube";
+        $video->Title = "YouTube Test";
+        $video->Description = "YouTube Description";
+        $video->Transcript = "<p>YouTube Transcript</p>";
+        $video->Width = 0;
+        $video->Height = 0;
+        $video->write();
+
+        $this->assertEquals($video->config()->get('default_thumb_width'), $video->getThumbWidth());
+        $this->assertEquals($video->config()->get('default_thumb_height'), $video->getThumbHeight());
+    }
 
     public function testValidationWrite() {
         try {
-            $video = GalleryVideo::create();
-            $video->Provider = GalleryVideo::PROVIDER_YOUTUBE;
+            $video = ElementFeaturedVideo::create();
+            $video->Provider = YouTube::getProviderCode();
             // provide a URL as a video embed code, fail on validation
             $video->Video = "https://www.youtube.com/embed/123456/";
             $video->Title = "YouTube Test";
@@ -33,8 +63,8 @@ class GalleryVideoTest extends SapphireTest {
 
     public function testVideoHeight() {
 
-        $video = GalleryVideo::create();
-        $video->Provider = GalleryVideo::PROVIDER_YOUTUBE;
+        $video = ElementFeaturedVideo::create();
+        $video->Provider = YouTube::getProviderCode();
         $video->Video = "testyoutube";
         $video->Title = "YouTube Test";
         $video->Description = "YouTube Description";
@@ -50,8 +80,8 @@ class GalleryVideoTest extends SapphireTest {
 
     public function testYouTube() {
 
-        $video = GalleryVideo::create();
-        $video->Provider = GalleryVideo::PROVIDER_YOUTUBE;
+        $video = ElementFeaturedVideo::create();
+        $video->Provider = YouTube::getProviderCode();
         $video->Video = "testyoutube";
         $video->Title = "YouTube Test";
         $video->Description = "YouTube Description";
@@ -92,8 +122,8 @@ class GalleryVideoTest extends SapphireTest {
 
     public function testYouTubeNoCookie() {
 
-        $video = GalleryVideo::create();
-        $video->Provider = GalleryVideo::PROVIDER_YOUTUBE_NOCOOKIE;
+        $video = ElementFeaturedVideo::create();
+        $video->Provider = YouTubeNoCookie::getProviderCode();
         $video->Video = "testyoutube-nocookie";
         $video->Title = "YouTube NoCookie Test";
         $video->Description = "YouTube NoCookie Description";
@@ -134,8 +164,8 @@ class GalleryVideoTest extends SapphireTest {
 
     public function testVimeo() {
 
-        $video = GalleryVideo::create();
-        $video->Provider = GalleryVideo::PROVIDER_VIMEO;
+        $video = ElementFeaturedVideo::create();
+        $video->Provider = Vimeo::getProviderCode();
         $video->Video = "testvimeo";
         $video->Title = "Vimeo Test";
         $video->Description = "Vimeo Description";
@@ -177,4 +207,5 @@ class GalleryVideoTest extends SapphireTest {
         $this->assertEquals( $expected, $query );
 
     }
+
 }
