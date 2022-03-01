@@ -6,7 +6,7 @@
 
     <figure>
 
-        <div class="embed video embed-responsive"<% if $EmbedAspectRatio %> style="padding-bottom: {$EmbedAspectRatio}%;<% end_if %>">
+        <div class="embed-responsive"<% if $EmbedAspectRatio %> style="padding-bottom: {$EmbedAspectRatio}%;<% end_if %>">
             $EmbedHTML
         </div>
 
