@@ -1,10 +1,20 @@
 <figure>
 
     <div class="embed video">
-    <% if $EmbedURL %>
+    <% if $UseVideoThumbnail == 1 %>
+        <% if $WatchURL %><a href="{$WatchURL}" rel="noopener"><% end_if %>
+        <% if $VideoThumbnail %>
+        <img src="{$VideoThumbnail}" class="video-thumbnail" referrerpolicy="no-referrer" loading="lazy">
+        <% end_if %>
+        <% if $WatchURL %></a><% end_if %>
+    <% else if $UseVideoThumbnail == 0 %>
+        <% if $WatchURL %><a href="{$WatchURL}" rel="noopener"><% end_if %>
+        {$Image.ScaleWidth(720)
+        <% if $WatchURL %></a><% end_if %>
+    <% else if $EmbedURL %>
         <% include NSWDPC/Elemental/Models/FeaturedVideo/Iframe EmbedURL=$EmbedURL, Anchor=$Parent.Anchor, ID=$ID, AllowAttribute=$AllowAttribute %>
     <% else %>
-        <!-- no URL for this video was found -->
+        <!-- no URL or thumbnail for this video was found -->
     <% end_if %>
     </div>
 

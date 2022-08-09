@@ -7,6 +7,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
 use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
@@ -88,6 +89,8 @@ class GalleryVideo extends DataObject implements VideoDefaults {
         'Description' => 'Text',
         'Sort' => 'Int',
         'Transcript' => 'HTMLText',
+        'VideoThumbnail' => 'Varchar(255)',
+        'UseVideoThumbnail' => 'Boolean'
     ];
 
     /**
@@ -163,9 +166,14 @@ class GalleryVideo extends DataObject implements VideoDefaults {
         return $folder_name;
     }
 
+    /**
+     * Apply changes on write
+     */
     public function onBeforeWrite() {
         parent::onBeforeWrite();
         $this->validateVideoCode($this->Video);
+        // update the OEmbed image value
+        $this->VideoThumbnail = $this->getOEmbedImage();
     }
 
     /**
@@ -269,6 +277,42 @@ class GalleryVideo extends DataObject implements VideoDefaults {
                     $this
                 )
             ]
+        );
+
+        $fields->insertAfter(
+            'Image',
+            ReadonlyField::create(
+                'VideoThumbnail',
+                _t(
+                    __CLASS__ . 'VIDEO_THUMBNAIL', 'Video thumbnail'
+                ),
+            )->setDescription(
+                _t(
+                    __CLASS__ . 'VIDEO_THUMBNAIL_DESCRIPTION', 'The automatically discovered video thumbnail, if found. Copy and paste the URL into a browser to view it.'
+                ),
+            )
+        );
+
+        if($imageField = $fields->dataFieldByName('Image')) {
+            $imageField->setTitle(
+                _t(
+                    __CLASS__ . 'IMAGE_SPECIFIC_THUMBNAIL', 'Upload an image to use as the thumbnail'
+                )
+            );
+        }
+
+        $fields->insertAfter(
+            'VideoThumbnail',
+            DropdownField::create(
+                'UseVideoThumbnail',
+                _t(
+                    __CLASS__ . 'VIDEO_THUMBNAIL_TO_USE', 'Select which thumbnail to use, if it exists'
+                ),
+                [
+                    0 => _t(__CLASS__ . 'IMAGE_UPLOADED', 'Image uploaded'),
+                    1 => _t(__CLASS__ . 'VIDEO_THUMBNAIL_FOUND', 'Video thumbnail found')
+                ]
+            )
         );
 
         return $fields;
