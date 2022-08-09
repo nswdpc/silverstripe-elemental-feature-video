@@ -2,6 +2,7 @@
 
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
+use Embed\Embed;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\View\Requirements;
 
@@ -15,6 +16,12 @@ trait VideoFromProvider {
      * @var int
      */
     protected $videoHeight = 0;
+
+
+    /**
+     * @var Extractor|null
+     */
+    protected $oEmbedData = null;
 
     /**
      * Get available video providers
@@ -126,6 +133,34 @@ CSS,
      */
     public function AllowAttribute() : string {
         return '';
+    }
+
+    /**
+     * Return OEmbed data from embed/embed
+     * @param bool $force true = force request to be made
+     * @return mixed
+     */
+    public function getOEmbedData($force = false) {
+        try {
+            if(is_null($this->oEmbedData) || $force) {
+                $watchURL = $this->WatchURL();
+                $reflector = new \ReflectionClass(Embed::class);
+                $this->oEmbedData = Embed::create( $watchURL );
+            }
+        } catch (\Exception $e) {
+            // some error occurred
+            $this->oEmbedData = null;
+        }
+        return $this->oEmbedData;
+    }
+
+    /**
+     * Return OEmbed image value
+     */
+    public function getOEmbedImage() : ?string {
+        $info = $this->getOEmbedData();
+        $value = isset($info->image) ? $info->image : null;
+        return $value;
     }
 
 }

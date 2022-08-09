@@ -28,6 +28,7 @@
         }
     },
     "require": {
+        "embed/embed": "^3.4",
         "symbiote/silverstripe-gridfieldextensions" : "^3",
         "dnadesign/silverstripe-elemental": "^4.3.0",
         "gorriecoe/silverstripe-linkfield" : "^1",
