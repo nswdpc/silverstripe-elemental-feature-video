@@ -144,7 +144,6 @@ CSS,
         try {
             if(is_null($this->oEmbedData) || $force) {
                 $watchURL = $this->WatchURL();
-                $reflector = new \ReflectionClass(Embed::class);
                 $this->oEmbedData = Embed::create( $watchURL );
             }
         } catch (\Exception $e) {
