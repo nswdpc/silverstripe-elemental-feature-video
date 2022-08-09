@@ -2,6 +2,8 @@
 
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
+use Silverstripe\Control\Director;
+
 /**
  * YouTube provider, based on https://developers.google.com/youtube/player_parameters
  * @author James
@@ -49,6 +51,8 @@ class YouTube extends VideoProvider {
      */
     public function getQueryArguments() : array {
         return [
+            "enablejsapi" => 1,
+            "origin" => Director::protocolAndHost(),
             "autoplay" => 0,
             "modestbranding" => 0,
             "fs" => 1,
