@@ -7,6 +7,7 @@ use NSWDPC\Elemental\Models\FeaturedVideo\Vimeo;
 use NSWDPC\Elemental\Models\FeaturedVideo\YouTubeNoCookie;
 use NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider;
 use NSWDPC\Elemental\Models\FeaturedVideo\ElementFeaturedVideo;
+use SilverStripe\Control\Director;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\ORM\ValidationException;
 
@@ -14,6 +15,8 @@ use SilverStripe\ORM\ValidationException;
  * Provide tests for element featured video
  */
 class ElementFeaturedVideoTest extends SapphireTest {
+
+    protected $usesDatabase =  true;
 
     public function testThumbWidthHeight() {
         $video = ElementFeaturedVideo::create();
@@ -110,7 +113,9 @@ class ElementFeaturedVideoTest extends SapphireTest {
             "autoplay" => 0,
             "modestbranding" => 0,
             "fs" => 1,
-            "rel" => 0
+            "rel" => 0,
+            "enablejsapi" => 1,
+            "origin" => Director::protocolAndHost()
         ];
 
         asort($query);
@@ -152,7 +157,9 @@ class ElementFeaturedVideoTest extends SapphireTest {
             "autoplay" => 0,
             "modestbranding" => 0,
             "fs" => 1,
-            "rel" => 0
+            "rel" => 0,
+            "enablejsapi" => 1,
+            "origin" => Director::protocolAndHost()
         ];
 
         asort($query);
