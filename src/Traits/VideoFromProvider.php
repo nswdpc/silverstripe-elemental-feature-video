@@ -3,7 +3,6 @@
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use Embed\Embed;
-use Embed\Extractor;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\View\Requirements;
 
@@ -139,14 +138,21 @@ CSS,
     /**
      * Return OEmbed data from embed/embed
      * @param bool $force true = force request to be made
-     * @return Extractor|null
+     * @return mixed
      */
-    public function getOEmbedData($force = false) : ?Extractor {
+    public function getOEmbedData($force = false) {
         try {
             if(is_null($this->oEmbedData) || $force) {
                 $watchURL = $this->WatchURL();
-                $embed = new Embed();
-                $this->oEmbedData = $embed->get( $watchURL );
+                $reflector = new \ReflectionClass(Embed::class);
+                if($reflector->isAbstract()) {
+                    // embed/embed v3
+                    $this->oEmbedData = Embed::create( $watchURL );
+                } else {
+                    // embed/embed v4
+                    $embed = new Embed();
+                    $this->oEmbedData = $embed->get( $watchURL );
+                }
             }
         } catch (\Exception $e) {
             // some error occurred
