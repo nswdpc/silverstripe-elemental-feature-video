@@ -64,6 +64,8 @@ class GalleryVideoTest extends SapphireTest {
         $video->UseVideoThumbnail = 1;
         $video->write();
 
+        $this->assertEquals( GalleryVideo::PROVIDER_YOUTUBE, $video->getVideoProviderCode() );
+
         $provider = VideoProvider::getProvider( $video->Provider );
 
         $this->assertInstanceOf( YouTube::class, $provider );
@@ -113,6 +115,8 @@ class GalleryVideoTest extends SapphireTest {
         $video->Transcript = "<p>YouTube NoCookie Transcript</p>";
         $video->write();
 
+        $this->assertEquals( GalleryVideo::PROVIDER_YOUTUBE_NOCOOKIE, $video->getVideoProviderCode() );
+
         $provider = VideoProvider::getProvider( $video->Provider );
 
         $this->assertInstanceOf( YouTubeNoCookie::class, $provider );
@@ -161,6 +165,8 @@ class GalleryVideoTest extends SapphireTest {
         $video->Description = "Vimeo Description";
         $video->Transcript = "<p>Vimeo Transcript</p>";
         $video->write();
+
+        $this->assertEquals( GalleryVideo::PROVIDER_VIMEO, $video->getVideoProviderCode() );
 
         $provider = VideoProvider::getProvider( $video->Provider );
 

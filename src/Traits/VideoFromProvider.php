@@ -3,6 +3,7 @@
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use Embed\Embed;
+use Silverstripe\Core\Convert;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\View\Requirements;
 
@@ -168,6 +169,22 @@ CSS,
         $info = $this->getOEmbedData();
         $value = isset($info->image) ? $info->image : null;
         return $value;
+    }
+
+    /**
+     * Return current video's provider code, determined by the Provider value
+     * Allows templates to use $VideoProviderCode in a data attribute
+     */
+    public function getVideoProviderCode() : ?string {
+        $inst = VideoProvider::getProvider( $this->Provider );
+        if($inst) {
+            /**
+             * @var VideoProvider
+             */
+            return $inst->getVideoProviderCode();
+        } else {
+            return null;
+        }
     }
 
 }

@@ -1,1 +1,1 @@
-<iframe loading="lazy" id="video-{$ID}-{$Anchor}" src="{$EmbedURL}" allow="{$AllowAttribute}" allowfullscreen></iframe>
+<iframe loading="lazy" id="video-{$ID}-{$Anchor}" src="{$EmbedURL}" allow="{$AllowAttribute}"<% if $VideoProviderCode %> data-video-provider="{$VideoProviderCode.XML}"<% end_if %> allowfullscreen></iframe>

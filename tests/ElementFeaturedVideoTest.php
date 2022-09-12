@@ -91,6 +91,8 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $video->Transcript = "<p>YouTube Transcript</p>";
         $video->write();
 
+        $this->assertEquals( YouTube::getProviderCode(), $video->getVideoProviderCode() );
+
         $provider = VideoProvider::getProvider( $video->Provider );
 
         $this->assertInstanceOf( YouTube::class, $provider );
@@ -135,6 +137,8 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $video->Transcript = "<p>YouTube NoCookie Transcript</p>";
         $video->write();
 
+        $this->assertEquals( YouTubeNoCookie::getProviderCode(), $video->getVideoProviderCode() );
+
         $provider = VideoProvider::getProvider( $video->Provider );
 
         $this->assertInstanceOf( YouTubeNoCookie::class, $provider );
@@ -178,6 +182,8 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $video->Description = "Vimeo Description";
         $video->Transcript = "<p>Vimeo Transcript</p>";
         $video->write();
+
+        $this->assertEquals( Vimeo::getProviderCode(), $video->getVideoProviderCode() );
 
         $provider = VideoProvider::getProvider( $video->Provider );
 
