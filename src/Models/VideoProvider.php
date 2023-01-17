@@ -73,4 +73,11 @@ abstract class VideoProvider {
         return $selection;
     }
 
+    /**
+     * Return the provider code for this video from an instance of this provider
+     */
+    public function getVideoProviderCode() : string {
+        return static::getProviderCode();
+    }
+
 }

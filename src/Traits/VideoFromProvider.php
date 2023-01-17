@@ -2,6 +2,8 @@
 
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
+use Embed\Embed;
+use Silverstripe\Core\Convert;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\View\Requirements;
 
@@ -15,6 +17,12 @@ trait VideoFromProvider {
      * @var int
      */
     protected $videoHeight = 0;
+
+
+    /**
+     * @var Extractor|null
+     */
+    protected $oEmbedData = null;
 
     /**
      * Get available video providers
@@ -126,6 +134,64 @@ CSS,
      */
     public function AllowAttribute() : string {
         return '';
+    }
+
+    /**
+     * Return OEmbed data from embed/embed
+     * @param bool $force true = force request to be made
+     * @return mixed
+     */
+    public function getOEmbedData($force = false) {
+        try {
+            if(is_null($this->oEmbedData) || $force) {
+                $watchURL = $this->WatchURL();
+                $reflector = new \ReflectionClass(Embed::class);
+                if($reflector->isAbstract()) {
+                    // embed/embed v3
+                    $this->oEmbedData = Embed::create( $watchURL );
+                } else {
+                    // embed/embed v4
+                    $embed = new Embed();
+                    $this->oEmbedData = $embed->get( $watchURL );
+                }
+            }
+        } catch (\Exception $e) {
+            // some error occurred
+            $this->oEmbedData = null;
+        }
+        return $this->oEmbedData;
+    }
+
+    /**
+     * Return OEmbed image value
+     */
+    public function getOEmbedImage() : ?string {
+        $value = null;
+        try {
+            $info = $this->getOEmbedData();
+            if($image = $info->image) {
+                $value = $info->image->__toString();
+            }
+        } catch (\Exception $e) {
+            // oembed failure to retrieve property
+        }
+        return $value;
+    }
+
+    /**
+     * Return current video's provider code, determined by the Provider value
+     * Allows templates to use $VideoProviderCode in a data attribute
+     */
+    public function getVideoProviderCode() : ?string {
+        $inst = VideoProvider::getProvider( $this->Provider );
+        if($inst) {
+            /**
+             * @var VideoProvider
+             */
+            return $inst->getVideoProviderCode();
+        } else {
+            return null;
+        }
     }
 
 }

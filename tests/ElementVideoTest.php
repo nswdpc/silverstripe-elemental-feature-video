@@ -10,6 +10,8 @@ use SilverStripe\Dev\SapphireTest;
  */
 class ElementVideoTest extends SapphireTest {
 
+    protected $usesDatabase =  true;
+
     public function testEmbedHTML() {
 
         $caption = "Caption of the video";

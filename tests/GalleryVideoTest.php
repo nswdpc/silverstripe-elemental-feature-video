@@ -7,6 +7,7 @@ use NSWDPC\Elemental\Models\FeaturedVideo\YouTube;
 use NSWDPC\Elemental\Models\FeaturedVideo\Vimeo;
 use NSWDPC\Elemental\Models\FeaturedVideo\YouTubeNoCookie;
 use NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider;
+use SilverStripe\Control\Director;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\ORM\ValidationException;
 
@@ -14,6 +15,8 @@ use SilverStripe\ORM\ValidationException;
  * Provide tests for a single gallery video
  */
 class GalleryVideoTest extends SapphireTest {
+
+    protected $usesDatabase =  true;
 
     public function testValidationWrite() {
         try {
@@ -50,13 +53,18 @@ class GalleryVideoTest extends SapphireTest {
 
     public function testYouTube() {
 
+        $videoId = "CyHMQ6iS3rY";
+
         $video = GalleryVideo::create();
         $video->Provider = GalleryVideo::PROVIDER_YOUTUBE;
-        $video->Video = "testyoutube";
+        $video->Video = $videoId;
         $video->Title = "YouTube Test";
         $video->Description = "YouTube Description";
         $video->Transcript = "<p>YouTube Transcript</p>";
+        $video->UseVideoThumbnail = 1;
         $video->write();
+
+        $this->assertEquals( GalleryVideo::PROVIDER_YOUTUBE, $video->getVideoProviderCode() );
 
         $provider = VideoProvider::getProvider( $video->Provider );
 
@@ -70,7 +78,7 @@ class GalleryVideoTest extends SapphireTest {
 
         $this->assertEquals("www.youtube.com", $parts['host']);
         $this->assertEquals("https", $parts['scheme']);
-        $this->assertEquals("/embed/testyoutube/", $parts['path']);
+        $this->assertEquals("/embed/{$videoId}/", $parts['path']);
 
         $this->assertNotEmpty($parts['query']);
 
@@ -80,7 +88,9 @@ class GalleryVideoTest extends SapphireTest {
             "autoplay" => 0,
             "modestbranding" => 0,
             "fs" => 1,
-            "rel" => 0
+            "rel" => 0,
+            "enablejsapi" => 1,
+            "origin" => Director::protocolAndHost()
         ];
 
         asort($query);
@@ -88,17 +98,24 @@ class GalleryVideoTest extends SapphireTest {
 
         $this->assertEquals( $expected, $query );
 
+        // validate the video has a thumbnail as a URL
+        $this->assertNotFalse( filter_var( $video->VideoThumbnail, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED ) );
+
     }
 
     public function testYouTubeNoCookie() {
 
+        $videoId = "vRl_jDVF-eo";
+
         $video = GalleryVideo::create();
         $video->Provider = GalleryVideo::PROVIDER_YOUTUBE_NOCOOKIE;
-        $video->Video = "testyoutube-nocookie";
+        $video->Video = $videoId;
         $video->Title = "YouTube NoCookie Test";
         $video->Description = "YouTube NoCookie Description";
         $video->Transcript = "<p>YouTube NoCookie Transcript</p>";
         $video->write();
+
+        $this->assertEquals( GalleryVideo::PROVIDER_YOUTUBE_NOCOOKIE, $video->getVideoProviderCode() );
 
         $provider = VideoProvider::getProvider( $video->Provider );
 
@@ -112,7 +129,7 @@ class GalleryVideoTest extends SapphireTest {
 
         $this->assertEquals("www.youtube-nocookie.com", $parts['host']);
         $this->assertEquals("https", $parts['scheme']);
-        $this->assertEquals("/embed/testyoutube-nocookie/", $parts['path']);
+        $this->assertEquals("/embed/{$videoId}/", $parts['path']);
 
         $this->assertNotEmpty($parts['query']);
 
@@ -122,7 +139,9 @@ class GalleryVideoTest extends SapphireTest {
             "autoplay" => 0,
             "modestbranding" => 0,
             "fs" => 1,
-            "rel" => 0
+            "rel" => 0,
+            "enablejsapi" => 1,
+            "origin" => Director::protocolAndHost()
         ];
 
         asort($query);
@@ -130,17 +149,24 @@ class GalleryVideoTest extends SapphireTest {
 
         $this->assertEquals( $expected, $query );
 
+        // validate the video has a thumbnail as a URL
+        $this->assertNotFalse( filter_var( $video->VideoThumbnail, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED ) );
+
     }
 
     public function testVimeo() {
 
+        $videoId = "700166879";
+
         $video = GalleryVideo::create();
         $video->Provider = GalleryVideo::PROVIDER_VIMEO;
-        $video->Video = "testvimeo";
+        $video->Video = $videoId;
         $video->Title = "Vimeo Test";
         $video->Description = "Vimeo Description";
         $video->Transcript = "<p>Vimeo Transcript</p>";
         $video->write();
+
+        $this->assertEquals( GalleryVideo::PROVIDER_VIMEO, $video->getVideoProviderCode() );
 
         $provider = VideoProvider::getProvider( $video->Provider );
 
@@ -154,7 +180,7 @@ class GalleryVideoTest extends SapphireTest {
 
         $this->assertEquals("player.vimeo.com", $parts['host']);
         $this->assertEquals("https", $parts['scheme']);
-        $this->assertEquals("/video/testvimeo/", $parts['path']);
+        $this->assertEquals("/video/{$videoId}/", $parts['path']);
 
         $this->assertNotEmpty($parts['query']);
 
@@ -175,6 +201,9 @@ class GalleryVideoTest extends SapphireTest {
         asort($expected);
 
         $this->assertEquals( $expected, $query );
+
+        // validate the video has a thumbnail as a URL
+        $this->assertNotFalse( filter_var( $video->VideoThumbnail, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED ) );
 
     }
 }
