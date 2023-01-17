@@ -166,8 +166,15 @@ CSS,
      * Return OEmbed image value
      */
     public function getOEmbedImage() : ?string {
-        $info = $this->getOEmbedData();
-        $value = isset($info->image) ? $info->image : null;
+        $value = null;
+        try {
+            $info = $this->getOEmbedData();
+            if($image = $info->image) {
+                $value = $info->image->__toString();
+            }
+        } catch (\Exception $e) {
+            // oembed failure to retrieve property
+        }
         return $value;
     }
 
