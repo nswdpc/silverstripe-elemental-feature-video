@@ -32,7 +32,7 @@
         "embed/embed": "^4.4",
         "symbiote/silverstripe-gridfieldextensions" : "^4",
         "dnadesign/silverstripe-elemental": "^5",
-        "gorriecoe/silverstripe-linkfield" : "*",
+        "gorriecoe/silverstripe-linkfield" : "^1.1",
         "gorriecoe/silverstripe-embed" : "*",
         "silverstripe/assets" : "^2",
         "silverstripe/asset-admin" : "^2",
