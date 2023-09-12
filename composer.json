@@ -23,7 +23,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "NSWDPC\\Elemental\\Models\\FeaturedVideo\\": "src/",
+            "NSWDPC\\Elemental\\Models\\FeaturedVideo\\": [
+                "src/Controller/",
+                "src/Interfaces/",
+                "src/Models/",
+                "src/Models/Elements/",
+                "src/Traits/"
+            ],
             "NSWDPC\\Elemental\\Models\\FeaturedVideo\\Tests\\": "tests/"
         }
     },
