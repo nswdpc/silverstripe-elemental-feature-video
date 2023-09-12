@@ -271,4 +271,13 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
         return $fields;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function forTemplate($holder = true)
+    {
+        $this->addEmbedRequirements();
+        return parent::forTemplate($holder);
+    }
+
 }

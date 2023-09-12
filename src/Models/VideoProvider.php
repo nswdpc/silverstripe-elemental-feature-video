@@ -38,6 +38,14 @@ abstract class VideoProvider {
 
     abstract public function getWatchURL(string $videoID, array $customQueryArgs) : string;
 
+
+    /**
+     * Optional JS/CSS requirements for provider
+     */
+    public function addEmbedRequirements() : bool {
+        return false;
+    }
+
     /**
      * Return the available providers, subclasses of this class
      */

@@ -105,10 +105,19 @@ CSS,
     }
 
     /**
+     * Add an requirements used by the video provider to support video embedding
+     */
+    protected function addEmbedRequirements() : void {
+        if($provider = VideoProvider::getProvider( $this->Provider )) {
+            // Add any provider requirements
+            $provider->addEmbedRequirements();
+        }
+    }
+
+    /**
      * Return the URL to embed the video in an <iframe>
      */
     public function EmbedURL() : string {
-        $this->applyRequirements();
         $provider = VideoProvider::getProvider( $this->Provider );
         if($provider) {
             return $provider->getEmbedURL( $this->getVideoid(), [], $this->getVideoHeight() );
