@@ -71,33 +71,6 @@ trait VideoFromProvider {
     }
 
     /**
-     * Apply CSS requirements
-     */
-    protected function applyRequirements() {
-        $height = $this->getVideoHeight();
-        Requirements::customCSS(
-<<<CSS
-.embed.video {
-    position: relative;
-    overflow: hidden;
-    padding-top: 56.25%;/* 16:9 */
-    height : {$height}px;
-}
-
-.embed.video > iframe {
-    border: 0;
-    height: 100% !important;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-}
-CSS,
-            'galleryVideoEmbedCSS'
-        );
-    }
-
-    /**
      * Method to wrap retrieval of the video id code
      */
     public function getVideoid() {
@@ -105,10 +78,19 @@ CSS,
     }
 
     /**
+     * Add an requirements used by the video provider to support video embedding
+     */
+    protected function addEmbedRequirements() : void {
+        if($provider = VideoProvider::getProvider( $this->Provider )) {
+            // Add any provider requirements
+            $provider->addEmbedRequirements();
+        }
+    }
+
+    /**
      * Return the URL to embed the video in an <iframe>
      */
     public function EmbedURL() : string {
-        $this->applyRequirements();
         $provider = VideoProvider::getProvider( $this->Provider );
         if($provider) {
             return $provider->getEmbedURL( $this->getVideoid(), [], $this->getVideoHeight() );
