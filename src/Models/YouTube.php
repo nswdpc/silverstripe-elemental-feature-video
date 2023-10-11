@@ -3,12 +3,22 @@
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use Silverstripe\Control\Director;
+use SilverStripe\View\Requirements;
 
 /**
  * YouTube provider, based on https://developers.google.com/youtube/player_parameters
  * @author James
  */
 class YouTube extends VideoProvider {
+
+
+    /**
+     * @var bool
+     * @config
+     * Whether to enable (and require) the YT iframe API
+     * See: https://developers.google.com/youtube/iframe_api_reference
+     */
+    private static $enable_iframe_api = true;
 
     /**
      * Return ident code for this video, used to load an instance of this class
@@ -58,6 +68,23 @@ class YouTube extends VideoProvider {
             "fs" => 1,
             "rel" => 0 // show related videos from the same channel
         ];
+    }
+
+    /**
+     * Include the YT iframe API (if enabled)
+     */
+    public function addEmbedRequirements() : bool {
+        if(!self::config()->get('enable_iframe_api')) {
+            return false;
+        } else {
+            Requirements::javascript(
+                "https://www.youtube.com/iframe_api",
+                [
+                    "async" => true,
+                ]
+            );
+            return true;
+        }
     }
 
     /**
