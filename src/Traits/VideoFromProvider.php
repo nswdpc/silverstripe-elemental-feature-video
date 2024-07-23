@@ -127,15 +127,8 @@ trait VideoFromProvider {
         try {
             if(is_null($this->oEmbedData) || $force) {
                 $watchURL = $this->WatchURL();
-                $reflector = new \ReflectionClass(Embed::class);
-                if($reflector->isAbstract()) {
-                    // embed/embed v3
-                    $this->oEmbedData = Embed::create( $watchURL );
-                } else {
-                    // embed/embed v4
-                    $embed = new Embed();
-                    $this->oEmbedData = $embed->get( $watchURL );
-                }
+                $embed = new Embed();
+                $this->oEmbedData = $embed->get( $watchURL );
             }
         } catch (\Exception $e) {
             // some error occurred
