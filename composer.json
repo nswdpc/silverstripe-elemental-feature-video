@@ -43,7 +43,7 @@
         "silverstripe/assets" : "^2",
         "silverstripe/asset-admin" : "^2",
         "silverstripe/versioned": "^2",
-        "nswdpc/silverstripe-inline-linker": "*"
+        "nswdpc/silverstripe-inline-linker": "^1"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
