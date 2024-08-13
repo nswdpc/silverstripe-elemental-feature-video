@@ -21,48 +21,27 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 {
     use VideoFromProvider;
 
-    /**
-     * @var string
-     */
-    private static $icon = 'font-icon-block-media';
+    private static string $icon = 'font-icon-block-media';
 
-    /**
-     * @var string
-     */
-    private static $table_name = 'ElementFeaturedVideo';
+    private static string $table_name = 'ElementFeaturedVideo';
 
-    /**
-     * @var string
-     */
-    private static $title = 'Feature video';
+    private static string $title = 'Feature video';
 
-    /**
-     * @var string
-     */
-    private static $description = "Display a feature video";
+    private static string $description = "Display a feature video";
 
-    /**
-     * @var string
-     */
-    private static $singular_name = 'FeaturedVideo';
+    private static string $singular_name = 'FeaturedVideo';
 
-    /**
-     * @var string
-     */
-    private static $plural_name = 'FeaturedVideos';
+    private static string $plural_name = 'FeaturedVideos';
 
     /**
      * Element type
      */
     public function getType()
     {
-        return _t(__CLASS__ . '.BlockType', 'Video (feature)');
+        return _t(self::class . '.BlockType', 'Video (feature)');
     }
 
-    /**
-     * @var array
-     */
-    private static $db = [
+    private static array $db = [
         'Video' => 'Varchar(255)',
         'Provider' => 'Varchar',
         'Width' => 'Int',
@@ -70,38 +49,23 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         'Transcript' => 'HTMLText'
     ];
 
-    /**
-     * @var array
-     */
-    private static $has_one = [
+    private static array $has_one = [
         'Image' => Image::class,
         'FeatureLink' => Link::class // an optional link for more information
     ];
 
-    /**
-     * @var array
-     */
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Image.CMSThumbnail' => 'Image',
         'Title' => 'Title',
     ];
 
-    /**
-     * @var array
-     */
-    private static $owns = [
+    private static array $owns = [
         'Image'
     ];
 
-    /**
-     * @var int
-     */
-    private static $default_thumb_width = 1200;
+    private static int $default_thumb_width = 1200;
 
-    /**
-     * @var int
-     */
-    private static $default_thumb_height = 0;
+    private static int $default_thumb_height = 0;
 
     /**
      * Default height of video, if none specified
@@ -118,6 +82,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         if($width <= 0) {
             $width = $this->config()->get('default_thumb_width');
         }
+
         return $width;
     }
 
@@ -130,12 +95,12 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         if($height <= 0) {
             $height = $this->config()->get('default_thumb_height');
         }
+
         return $height;
     }
 
     /**
      * Return default video height
-     * @return int
      */
     public function getDefaultVideoHeight(): int
     {
@@ -152,15 +117,14 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
             $width = $this->getThumbWidth();
             $height = $this->getThumbHeight();
             if($width > 0 && $height > 0) {
-                $coverImage = $image->FillMax($width, $height);
-                return $coverImage;
+                return $image->FillMax($width, $height);
             } elseif($width > 0) {
-                $coverImage = $image->ScaleWidth($width);
-                return $coverImage;
+                return $image->ScaleWidth($width);
             } else {
                 return $image;
             }
         }
+
         return null;
     }
 
@@ -173,8 +137,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         if(empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
         }
-        $types = array_unique($types);
-        return $types;
+        return array_unique($types);
     }
 
     /**
@@ -208,20 +171,20 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
             [
                 OptionsetField::create(
                     'Provider',
-                    _t(__CLASS__ . '.PROVIDER', 'Video provider'),
+                    _t(self::class . '.PROVIDER', 'Video provider'),
                     $this->getVideoProviders()
                 ),
                 TextField::create(
                     'Video',
                     _t(
-                        __CLASS__ . 'VideoID',
+                        self::class . 'VideoID',
                         'Video ID'
                     )
                 ),
                 InlineLinkCompositeField::create(
                     'FeatureLink',
                     _t(
-                        __CLASS__ . 'LINK',
+                        self::class . 'LINK',
                         'Link'
                     ),
                     $this->owner
@@ -229,14 +192,14 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
                 UploadField::create(
                     'Image',
                     _t(
-                        __CLASS__ . '.SLIDE_IMAGE',
+                        self::class . '.SLIDE_IMAGE',
                         'Cover image'
                     )
                 )->setFolderName('videos/' . $this->ID)
                 ->setAllowedExtensions($this->getAllowedFileTypes())
                 ->setDescription(
                     _t(
-                        __CLASS__ . 'ALLOWED_FILE_TYPES',
+                        self::class . 'ALLOWED_FILE_TYPES',
                         'Upload an image to use as a cover image. Allowed file types: {allowedFileTypes}',
                         [
                             'allowedFileTypes' => implode(",", $this->getAllowedFileTypes())
@@ -246,24 +209,24 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
                 NumericField::create(
                     'Width',
                     _t(
-                        __CLASS__ . '.IMAGE_WIDTH',
+                        self::class . '.IMAGE_WIDTH',
                         'Image width'
                     )
                 )->setHTML5(true)->setDescription(
                     _t(
-                        __CLASS__ . '.IMAGE_WIDTH_DESCRIPTION',
+                        self::class . '.IMAGE_WIDTH_DESCRIPTION',
                         'Enter a width to restrict the image. Leave the width and height as zero to return the original image as the cover image'
                     )
                 ),
                 NumericField::create(
                     'Height',
                     _t(
-                        __CLASS__ . '.IMAGE_HEIGHT',
+                        self::class . '.IMAGE_HEIGHT',
                         'Image height'
                     )
                 )->setHTML5(true)->setDescription(
                     _t(
-                        __CLASS__ . '.IMAGE_HEIGHT_DESCRIPTION',
+                        self::class . '.IMAGE_HEIGHT_DESCRIPTION',
                         'Enter a height to restrict the image, or leave as zero to scale by width only'
                     )
                 )
@@ -276,7 +239,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
             HTMLEditorField::create(
                 'Transcript',
                 _t(
-                    __CLASS__ . '.TRANSCRIPT',
+                    self::class . '.TRANSCRIPT',
                     'Transcript of video'
                 )
             )

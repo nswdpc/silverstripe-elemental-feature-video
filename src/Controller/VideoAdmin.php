@@ -10,25 +10,13 @@ use SilverStripe\Admin\ModelAdmin;
  */
 class VideoAdmin extends ModelAdmin
 {
-    /**
-     * @var string
-     */
-    private static $url_segment = 'gallery-video';
+    private static string $url_segment = 'gallery-video';
 
-    /**
-     * @var string
-     */
-    private static $menu_title = 'Videos';
+    private static string $menu_title = 'Videos';
 
-    /**
-     * @var string
-     */
-    private static $menu_icon_class = 'font-icon-block-media';
+    private static string $menu_icon_class = 'font-icon-block-media';
 
-    /**
-     * @var array
-     */
-    private static $managed_models = [
+    private static array $managed_models = [
         GalleryVideo::class
     ];
 
@@ -38,8 +26,7 @@ class VideoAdmin extends ModelAdmin
     public function getList()
     {
         $list = parent::getList();
-        $list = $list->sort(['Title' => 'ASC']);
-        return $list;
+        return $list->sort(['Title' => 'ASC']);
     }
 
 }

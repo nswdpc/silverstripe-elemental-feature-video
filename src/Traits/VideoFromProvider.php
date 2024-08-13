@@ -22,7 +22,7 @@ trait VideoFromProvider
     /**
      * @var Extractor|null
      */
-    protected $oEmbedData = null;
+    protected $oEmbedData;
 
     /**
      * Get available video providers
@@ -64,13 +64,11 @@ trait VideoFromProvider
      */
     public function validateVideoCode($videoCode)
     {
-        if(preg_match("/^http(s)?:\/\//", $videoCode)) {
-            throw new ValidationException(
-                _t(
-                    __CLASS__ . ".VIDEO_ID_NOT_URL",
-                    "Please use the video id from the embed URL, not the URL itself"
-                )
-            );
+        if(preg_match("/^http(s)?:\/\//", (string) $videoCode)) {
+            throw \SilverStripe\ORM\ValidationException::create(_t(
+                self::class . ".VIDEO_ID_NOT_URL",
+                "Please use the video id from the embed URL, not the URL itself"
+            ));
         }
     }
 
@@ -87,7 +85,7 @@ trait VideoFromProvider
      */
     protected function addEmbedRequirements(): void
     {
-        if($provider = VideoProvider::getProvider($this->Provider)) {
+        if(($provider = VideoProvider::getProvider($this->Provider)) instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             // Add any provider requirements
             $provider->addEmbedRequirements();
         }
@@ -99,7 +97,7 @@ trait VideoFromProvider
     public function EmbedURL(): string
     {
         $provider = VideoProvider::getProvider($this->Provider);
-        if($provider) {
+        if($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getEmbedURL($this->getVideoid(), [], $this->getVideoHeight());
         } else {
             return "";
@@ -112,7 +110,7 @@ trait VideoFromProvider
     public function WatchURL(): string
     {
         $provider = VideoProvider::getProvider($this->Provider);
-        if($provider) {
+        if($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getWatchURL($this->getVideoid(), []);
         } else {
             return "";
@@ -140,10 +138,11 @@ trait VideoFromProvider
                 $embed = new Embed();
                 $this->oEmbedData = $embed->get($watchURL);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // some error occurred
             $this->oEmbedData = null;
         }
+
         return $this->oEmbedData;
     }
 
@@ -158,9 +157,10 @@ trait VideoFromProvider
             if($image = $info->image) {
                 $value = $info->image->__toString();
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // oembed failure to retrieve property
         }
+
         return $value;
     }
 
@@ -171,7 +171,7 @@ trait VideoFromProvider
     public function getVideoProviderCode(): ?string
     {
         $inst = VideoProvider::getProvider($this->Provider);
-        if($inst) {
+        if($inst instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             /**
              * @var VideoProvider
              */

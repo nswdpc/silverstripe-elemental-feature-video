@@ -18,7 +18,7 @@ class GalleryVideoTest extends SapphireTest
 {
     protected $usesDatabase =  true;
 
-    public function testValidationWrite()
+    public function testValidationWrite(): void
     {
         try {
             $video = GalleryVideo::create();
@@ -30,12 +30,12 @@ class GalleryVideoTest extends SapphireTest
             $video->Transcript = "<p>YouTube Transcript</p>";
             $video->write();
             $this->assertFalse($video->IsInDB());
-        } catch (ValidationException $e) {
-            $this->assertNotEmpty($e->getMessage());
+        } catch (ValidationException $validationException) {
+            $this->assertNotEmpty($validationException->getMessage());
         }
     }
 
-    public function testVideoHeight()
+    public function testVideoHeight(): void
     {
 
         $video = GalleryVideo::create();
@@ -53,7 +53,7 @@ class GalleryVideoTest extends SapphireTest
         $this->assertEquals($height, $video->getVideoHeight());
     }
 
-    public function testYouTube()
+    public function testYouTube(): void
     {
 
         $videoId = "CyHMQ6iS3rY";
@@ -106,7 +106,7 @@ class GalleryVideoTest extends SapphireTest
 
     }
 
-    public function testYouTubeNoCookie()
+    public function testYouTubeNoCookie(): void
     {
 
         $videoId = "vRl_jDVF-eo";
@@ -158,7 +158,7 @@ class GalleryVideoTest extends SapphireTest
 
     }
 
-    public function testVimeo()
+    public function testVimeo(): void
     {
 
         $videoId = "700166879";

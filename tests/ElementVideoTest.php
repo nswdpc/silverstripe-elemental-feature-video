@@ -12,7 +12,7 @@ class ElementVideoTest extends SapphireTest
 {
     protected $usesDatabase =  true;
 
-    public function testEmbedHTML()
+    public function testEmbedHTML(): void
     {
 
         $caption = "Caption of the video";

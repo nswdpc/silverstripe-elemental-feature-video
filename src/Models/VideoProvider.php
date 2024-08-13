@@ -53,9 +53,7 @@ abstract class VideoProvider
      */
     public static function getProviders(): array
     {
-        $providers = [];
-        $children = ClassInfo::subclassesFor(self::class, false);
-        return $children;
+        return ClassInfo::subclassesFor(self::class, false);
     }
 
     /**
@@ -64,11 +62,12 @@ abstract class VideoProvider
     public static function getProvider($code): ?VideoProvider
     {
         $providers = self::getProviders();
-        foreach($providers as $childClass => $providerClass) {
+        foreach($providers as $providerClass) {
             if($providerClass::getProviderCode() == $code) {
                 return Injector::inst()->create($providerClass);
             }
         }
+
         return null;
     }
 
@@ -79,10 +78,11 @@ abstract class VideoProvider
     {
         $selection = [];
         $providers = self::getProviders();
-        foreach($providers as $childClass => $providerClass) {
+        foreach($providers as $providerClass) {
             $inst = Injector::inst()->create($providerClass);
             $selection[ $inst->getProviderCode() ] = $inst->getProviderDescription();
         }
+
         return $selection;
     }
 

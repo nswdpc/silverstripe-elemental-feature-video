@@ -18,7 +18,7 @@ class ElementFeaturedVideoTest extends SapphireTest
 {
     protected $usesDatabase =  true;
 
-    public function testThumbWidthHeight()
+    public function testThumbWidthHeight(): void
     {
         $video = ElementFeaturedVideo::create();
         $video->Provider = YouTube::getProviderCode();
@@ -34,7 +34,7 @@ class ElementFeaturedVideoTest extends SapphireTest
         $this->assertEquals(603, $video->getThumbHeight());
     }
 
-    public function testDefaultThumbWidthHeight()
+    public function testDefaultThumbWidthHeight(): void
     {
         $video = ElementFeaturedVideo::create();
         $video->Provider = YouTube::getProviderCode();
@@ -50,7 +50,7 @@ class ElementFeaturedVideoTest extends SapphireTest
         $this->assertEquals($video->config()->get('default_thumb_height'), $video->getThumbHeight());
     }
 
-    public function testValidationWrite()
+    public function testValidationWrite(): void
     {
         try {
             $video = ElementFeaturedVideo::create();
@@ -62,12 +62,12 @@ class ElementFeaturedVideoTest extends SapphireTest
             $video->Transcript = "<p>YouTube Transcript</p>";
             $video->write();
             $this->assertFalse($video->IsInDB());
-        } catch (ValidationException $e) {
-            $this->assertNotEmpty($e->getMessage());
+        } catch (ValidationException $validationException) {
+            $this->assertNotEmpty($validationException->getMessage());
         }
     }
 
-    public function testVideoHeight()
+    public function testVideoHeight(): void
     {
 
         $video = ElementFeaturedVideo::create();
@@ -85,7 +85,7 @@ class ElementFeaturedVideoTest extends SapphireTest
         $this->assertEquals($height, $video->getVideoHeight());
     }
 
-    public function testYouTube()
+    public function testYouTube(): void
     {
 
         $video = ElementFeaturedVideo::create();
@@ -132,7 +132,7 @@ class ElementFeaturedVideoTest extends SapphireTest
 
     }
 
-    public function testYouTubeNoCookie()
+    public function testYouTubeNoCookie(): void
     {
 
         $video = ElementFeaturedVideo::create();
@@ -179,7 +179,7 @@ class ElementFeaturedVideoTest extends SapphireTest
 
     }
 
-    public function testVimeo()
+    public function testVimeo(): void
     {
 
         $video = ElementFeaturedVideo::create();

@@ -12,12 +12,11 @@ use SilverStripe\View\Requirements;
 class YouTube extends VideoProvider
 {
     /**
-     * @var bool
      * @config
      * Whether to enable (and require) the YT iframe API
      * See: https://developers.google.com/youtube/iframe_api_reference
      */
-    private static $enable_iframe_api = true;
+    private static bool $enable_iframe_api = true;
 
     /**
      * Return ident code for this video, used to load an instance of this class

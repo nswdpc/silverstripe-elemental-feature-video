@@ -72,6 +72,7 @@ class Vimeo extends VideoProvider
         if($videoHeight > 0) {
             $customQueryArgs['height'] = $videoHeight;
         }
+
         $query = array_merge($this->getQueryArguments(), $customQueryArgs);
         $queryString = http_build_query($query);
         return $this->getProtocol()
@@ -87,6 +88,7 @@ class Vimeo extends VideoProvider
     {
         $query = [];
         $query = array_merge($query, $customQueryArgs);
+
         $queryString = http_build_query($query);
         $videoID = htmlspecialchars($videoID);
         return "https://www.vimeo.com/{$videoID}"
