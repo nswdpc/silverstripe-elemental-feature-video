@@ -16,7 +16,6 @@ use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
  */
 class ElementVideo extends BaseElement
 {
-
     /**
      * @var string
      */
@@ -94,7 +93,8 @@ class ElementVideo extends BaseElement
     /**
      * Override the return of EmbedType
      */
-    public function getEmbedType(): string {
+    public function getEmbedType(): string
+    {
         return Embeddable::EMBED_TYPE_VIDEO;
     }
 

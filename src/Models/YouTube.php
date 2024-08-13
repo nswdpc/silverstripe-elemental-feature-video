@@ -9,9 +9,8 @@ use SilverStripe\View\Requirements;
  * YouTube provider, based on https://developers.google.com/youtube/player_parameters
  * @author James
  */
-class YouTube extends VideoProvider {
-
-
+class YouTube extends VideoProvider
+{
     /**
      * @var bool
      * @config
@@ -23,14 +22,16 @@ class YouTube extends VideoProvider {
     /**
      * Return ident code for this video, used to load an instance of this class
      */
-    public static function getProviderCode() : string {
+    public static function getProviderCode(): string
+    {
         return GalleryVideo::PROVIDER_YOUTUBE;
     }
 
     /**
      * Description for assistance in identifying the provider
      */
-    public static function getProviderDescription() : string {
+    public static function getProviderDescription(): string
+    {
         return _t(
             GalleryVideo::class . ".YOUTUBE_PROVIDER_DESCRIPTION",
             "YouTube"
@@ -40,26 +41,29 @@ class YouTube extends VideoProvider {
     /**
      * Return YouTube host for URL
      */
-    public function getHost() : string {
+    public function getHost(): string
+    {
         return "www.youtube.com";
     }
 
     /**
      * Return YouTube path for URL
      */
-     public function getPath($videoId = '') : string {
-         if($videoId) {
-             return "/embed/{$videoId}/";
-         } else {
-             return "";
-         }
-     }
+    public function getPath($videoId = ''): string
+    {
+        if($videoId) {
+            return "/embed/{$videoId}/";
+        } else {
+            return "";
+        }
+    }
 
     /**
      * Return YouTube default query arguments for URL
      * Provide some sensible defaults. You can override these in getEmbedURL
      */
-    public function getQueryArguments() : array {
+    public function getQueryArguments(): array
+    {
         return [
             "enablejsapi" => 1,
             "origin" => Director::protocolAndHost(),
@@ -73,7 +77,8 @@ class YouTube extends VideoProvider {
     /**
      * Include the YT iframe API (if enabled)
      */
-    public function addEmbedRequirements() : bool {
+    public function addEmbedRequirements(): bool
+    {
         if(!self::config()->get('enable_iframe_api')) {
             return false;
         } else {
@@ -90,7 +95,8 @@ class YouTube extends VideoProvider {
     /**
      * Return Embed URL for the video
      */
-    public function getEmbedURL(string $videoID, array $customQueryArgs, int $videoHeight) : string {
+    public function getEmbedURL(string $videoID, array $customQueryArgs, int $videoHeight): string
+    {
         $query = array_merge($this->getQueryArguments(), $customQueryArgs);
         $queryString = http_build_query($query);
         return $this->getProtocol()
@@ -102,7 +108,8 @@ class YouTube extends VideoProvider {
     /**
      * Return off-site watch URL for the video
      */
-    public function getWatchURL(string $videoID, array $customQueryArgs) : string {
+    public function getWatchURL(string $videoID, array $customQueryArgs): string
+    {
         $query = [
             'rel' => 0,
         ];

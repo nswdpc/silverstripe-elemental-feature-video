@@ -8,11 +8,12 @@ use SilverStripe\Dev\SapphireTest;
 /**
  * Provide tests for element video
  */
-class ElementVideoTest extends SapphireTest {
-
+class ElementVideoTest extends SapphireTest
+{
     protected $usesDatabase =  true;
 
-    public function testEmbedHTML() {
+    public function testEmbedHTML()
+    {
 
         $caption = "Caption of the video";
         $altURL = "https://alt.example.com/video";

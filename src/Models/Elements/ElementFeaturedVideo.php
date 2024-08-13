@@ -1,4 +1,5 @@
 <?php
+
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use DNADesign\Elemental\Models\ElementContent;
@@ -16,8 +17,8 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
 /**
  * ElementFeaturedVideo adds a featured video
  */
-class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
-
+class ElementFeaturedVideo extends ElementContent implements VideoDefaults
+{
     use VideoFromProvider;
 
     /**
@@ -106,12 +107,13 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
      * Default height of video, if none specified
      * @var int
      */
-    const DEFAULT_HEIGHT = 600;
+    public const DEFAULT_HEIGHT = 600;
 
     /**
      * Return thumbnail width
      */
-    public function getThumbWidth() : int {
+    public function getThumbWidth(): int
+    {
         $width = $this->Width;
         if($width <= 0) {
             $width = $this->config()->get('default_thumb_width');
@@ -122,7 +124,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
     /**
      * Return thumbnail height
      */
-    public function getThumbHeight() : int {
+    public function getThumbHeight(): int
+    {
         $height = $this->Height;
         if($height <= 0) {
             $height = $this->config()->get('default_thumb_height');
@@ -134,23 +137,25 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
      * Return default video height
      * @return int
      */
-    public function getDefaultVideoHeight() : int {
+    public function getDefaultVideoHeight(): int
+    {
         return self::DEFAULT_HEIGHT;
     }
 
     /**
      * Cover image for link
      */
-    public function getCoverImage() : ?DBFile {
+    public function getCoverImage(): ?DBFile
+    {
         $image = $this->Image();
         if($image && $image->exists()) {
             $width = $this->getThumbWidth();
             $height = $this->getThumbHeight();
             if($width > 0 && $height > 0) {
-                $coverImage = $image->FillMax( $width, $height );
+                $coverImage = $image->FillMax($width, $height);
                 return $coverImage;
-            } else if($width > 0) {
-                $coverImage = $image->ScaleWidth( $width );
+            } elseif($width > 0) {
+                $coverImage = $image->ScaleWidth($width);
                 return $coverImage;
             } else {
                 return $image;
@@ -162,7 +167,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
     /**
      * Return thumbnail allowed types
      */
-    public function getAllowedFileTypes() : array {
+    public function getAllowedFileTypes(): array
+    {
         $types = $this->config()->get('allowed_file_types');
         if(empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
@@ -185,7 +191,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
     /**
      * Get available video providers
      */
-    public function getVideoProviders() : array {
+    public function getVideoProviders(): array
+    {
         return GalleryVideo::create()->getVideoProviders();
     }
 
@@ -197,7 +204,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
         $fields = parent::getCMSFields();
         $fields->removeByName(['FeatureLink','FeatureLinkID']);
         $fields->addFieldsToTab(
-            'Root.Main', [
+            'Root.Main',
+            [
                 OptionsetField::create(
                     'Provider',
                     _t(__CLASS__ . '.PROVIDER', 'Video provider'),
@@ -206,13 +214,15 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
                 TextField::create(
                     'Video',
                     _t(
-                        __CLASS__ . 'VideoID', 'Video ID'
+                        __CLASS__ . 'VideoID',
+                        'Video ID'
                     )
                 ),
                 InlineLinkCompositeField::create(
                     'FeatureLink',
                     _t(
-                        __CLASS__ . 'LINK', 'Link'
+                        __CLASS__ . 'LINK',
+                        'Link'
                     ),
                     $this->owner
                 ),
@@ -236,21 +246,25 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults {
                 NumericField::create(
                     'Width',
                     _t(
-                        __CLASS__ . '.IMAGE_WIDTH', 'Image width'
+                        __CLASS__ . '.IMAGE_WIDTH',
+                        'Image width'
                     )
                 )->setHTML5(true)->setDescription(
                     _t(
-                        __CLASS__ . '.IMAGE_WIDTH_DESCRIPTION', 'Enter a width to restrict the image. Leave the width and height as zero to return the original image as the cover image'
+                        __CLASS__ . '.IMAGE_WIDTH_DESCRIPTION',
+                        'Enter a width to restrict the image. Leave the width and height as zero to return the original image as the cover image'
                     )
                 ),
                 NumericField::create(
                     'Height',
                     _t(
-                        __CLASS__ . '.IMAGE_HEIGHT', 'Image height'
+                        __CLASS__ . '.IMAGE_HEIGHT',
+                        'Image height'
                     )
                 )->setHTML5(true)->setDescription(
                     _t(
-                        __CLASS__ . '.IMAGE_HEIGHT_DESCRIPTION', 'Enter a height to restrict the image, or leave as zero to scale by width only'
+                        __CLASS__ . '.IMAGE_HEIGHT_DESCRIPTION',
+                        'Enter a height to restrict the image, or leave as zero to scale by width only'
                     )
                 )
             ]

@@ -11,8 +11,8 @@ use SilverStripe\View\Requirements;
  * Common methods for sourcing a video from a provider
  * @author James
  */
-trait VideoFromProvider {
-
+trait VideoFromProvider
+{
     /**
      * @var int
      */
@@ -27,7 +27,8 @@ trait VideoFromProvider {
     /**
      * Get available video providers
      */
-    public function getVideoProviders() : array {
+    public function getVideoProviders(): array
+    {
         $providers = VideoProvider::getProviderSelections();
         // @deprecated updateVideoProviders - this will be removed in v1
         $this->extend('updateVideoProviders', $providers);
@@ -37,7 +38,8 @@ trait VideoFromProvider {
     /**
      * Allow some control of the video height eg. from a gallery parent
      */
-    public function setVideoHeight(int $height) : self {
+    public function setVideoHeight(int $height): self
+    {
         $this->videoHeight = $height;
         return $this;
     }
@@ -45,7 +47,8 @@ trait VideoFromProvider {
     /**
      * Get specified height. Some providers allow a height to be set via URL arg
      */
-    public function getVideoHeight() :int {
+    public function getVideoHeight(): int
+    {
         $parent = $this->Parent();
         if($parent && $parent->VideoHeight > 0) {
             return $parent->VideoHeight;
@@ -59,7 +62,8 @@ trait VideoFromProvider {
     /**
      * Validate the video code provided
      */
-    public function validateVideoCode($videoCode) {
+    public function validateVideoCode($videoCode)
+    {
         if(preg_match("/^http(s)?:\/\//", $videoCode)) {
             throw new ValidationException(
                 _t(
@@ -73,15 +77,17 @@ trait VideoFromProvider {
     /**
      * Method to wrap retrieval of the video id code
      */
-    public function getVideoid() {
+    public function getVideoid()
+    {
         return $this->Video;
     }
 
     /**
      * Add an requirements used by the video provider to support video embedding
      */
-    protected function addEmbedRequirements() : void {
-        if($provider = VideoProvider::getProvider( $this->Provider )) {
+    protected function addEmbedRequirements(): void
+    {
+        if($provider = VideoProvider::getProvider($this->Provider)) {
             // Add any provider requirements
             $provider->addEmbedRequirements();
         }
@@ -90,10 +96,11 @@ trait VideoFromProvider {
     /**
      * Return the URL to embed the video in an <iframe>
      */
-    public function EmbedURL() : string {
-        $provider = VideoProvider::getProvider( $this->Provider );
+    public function EmbedURL(): string
+    {
+        $provider = VideoProvider::getProvider($this->Provider);
         if($provider) {
-            return $provider->getEmbedURL( $this->getVideoid(), [], $this->getVideoHeight() );
+            return $provider->getEmbedURL($this->getVideoid(), [], $this->getVideoHeight());
         } else {
             return "";
         }
@@ -102,10 +109,11 @@ trait VideoFromProvider {
     /**
      * Return the watch URL, to link to the video offsite, eg. at the provider
      */
-    public function WatchURL() : string {
-        $provider = VideoProvider::getProvider( $this->Provider );
+    public function WatchURL(): string
+    {
+        $provider = VideoProvider::getProvider($this->Provider);
         if($provider) {
-            return $provider->getWatchURL( $this->getVideoid(), [] );
+            return $provider->getWatchURL($this->getVideoid(), []);
         } else {
             return "";
         }
@@ -114,7 +122,8 @@ trait VideoFromProvider {
     /**
      * Return allow="" value for <iframe>
      */
-    public function AllowAttribute() : string {
+    public function AllowAttribute(): string
+    {
         return '';
     }
 
@@ -123,12 +132,13 @@ trait VideoFromProvider {
      * @param bool $force true = force request to be made
      * @return mixed
      */
-    public function getOEmbedData($force = false) {
+    public function getOEmbedData($force = false)
+    {
         try {
             if(is_null($this->oEmbedData) || $force) {
                 $watchURL = $this->WatchURL();
                 $embed = new Embed();
-                $this->oEmbedData = $embed->get( $watchURL );
+                $this->oEmbedData = $embed->get($watchURL);
             }
         } catch (\Exception $e) {
             // some error occurred
@@ -140,7 +150,8 @@ trait VideoFromProvider {
     /**
      * Return OEmbed image value
      */
-    public function getOEmbedImage() : ?string {
+    public function getOEmbedImage(): ?string
+    {
         $value = null;
         try {
             $info = $this->getOEmbedData();
@@ -157,8 +168,9 @@ trait VideoFromProvider {
      * Return current video's provider code, determined by the Provider value
      * Allows templates to use $VideoProviderCode in a data attribute
      */
-    public function getVideoProviderCode() : ?string {
-        $inst = VideoProvider::getProvider( $this->Provider );
+    public function getVideoProviderCode(): ?string
+    {
+        $inst = VideoProvider::getProvider($this->Provider);
         if($inst) {
             /**
              * @var VideoProvider
