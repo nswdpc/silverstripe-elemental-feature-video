@@ -111,6 +111,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
         if(empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
         }
+
         return array_unique($types);
     }
 
