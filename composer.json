@@ -51,8 +51,8 @@
     },
     "repositories": [
         {
-        "type": "git",
-        "url": "https://github.com/nswdpc/ci-files.git"
+            "type": "git",
+            "url": "https://github.com/nswdpc/ci-files.git"
         }
     ],
     "prefer-stable": true,
