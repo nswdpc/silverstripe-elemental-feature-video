@@ -1,4 +1,5 @@
 <?php
+
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo;
@@ -17,76 +18,72 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 /**
  * ElementVideoGallery adds a content slider via a sortable upload field
  */
-class ElementVideoGallery extends ElementContent {
+class ElementVideoGallery extends ElementContent
+{
+    private static string $icon = 'font-icon-thumbnails';
 
-    private static $icon = 'font-icon-thumbnails';
+    private static bool $inline_editable = false;
 
-    private static $inline_editable = false;
+    private static string $table_name = 'ElementVideoGallery';
 
-    private static $table_name = 'ElementVideoGallery';
+    private static string $title = 'Video gallery';
 
-    private static $title = 'Video gallery';
-    private static $description = "Display one or more videos";
+    private static string $description = "Display one or more videos";
 
-    private static $singular_name = 'Video gallery';
-    private static $plural_name = 'Video galleries';
+    private static string $singular_name = 'Video gallery';
+
+    private static string $plural_name = 'Video galleries';
 
     public function getType()
     {
-        return _t(__CLASS__ . '.BlockType', 'Video gallery');
+        return _t(self::class . '.BlockType', 'Video gallery');
     }
 
-    /**
-     * @var array
-     */
-    private static $db = [
+    private static array $db = [
         'GalleryStyle' => 'Varchar',
         'VideoHeight' => 'Int'
     ];
 
-    /**
-     * @var array
-     */
-    private static $has_many = [
+    private static array $has_many = [
         'Videos' => GalleryVideo::class,
     ];
 
-    /**
-     * @var array
-     */
-    private static $owns = [
+    private static array $owns = [
         'Videos'
     ];
 
     /**
      * Save a default height based on the Gallery Video constant
      */
-    public static function getDefaultHeight() : int {
+    public static function getDefaultHeight(): int
+    {
         return GalleryVideo::DEFAULT_HEIGHT;
     }
 
     /**
      * Return a title for a dropdown to assist in identifying this gallery
-     * @return string
      */
-    public function DropdownTitle() : string {
+    public function DropdownTitle(): string
+    {
         $title = $this->Title;
         if(!$title) {
             $title = $this->getType();
         }
+
         $page = $this->getPage();
         $suffix = "";
         if($page && $page->exists()) {
             $suffix = " - ";
             $suffix .= _t(
-                 __CLASS__ . ".ON_PAGE_TITLE",
-                 "on {pageType} '{pageTitle}'",
-                 [
-                     'pageType' => strtolower($page->i18n_singular_name()),
-                     'pageTitle' => $page->Title
-                 ]
+                self::class . ".ON_PAGE_TITLE",
+                "on {pageType} '{pageTitle}'",
+                [
+                    'pageType' => strtolower($page->i18n_singular_name()),
+                    'pageTitle' => $page->Title
+                ]
             );
         }
+
         return "{$title} (#{$this->ID}){$suffix}";
     }
 
@@ -100,7 +97,8 @@ class ElementVideoGallery extends ElementContent {
             GridField::create(
                 'Videos',
                 _t(
-                    __CLASS__ . '.VIDEOS', 'Videos'
+                    self::class . '.VIDEOS',
+                    'Videos'
                 ),
                 $this->Videos(),
                 $config = GridFieldConfig_RelationEditor::create()
@@ -110,17 +108,19 @@ class ElementVideoGallery extends ElementContent {
 
         $heightField = NumericField::create(
             'VideoHeight',
-            _t(__CLASS__ . ".VIDEO_HEIGHT", "Apply a height to all videos in this gallery (pixels)")
+            _t(self::class . ".VIDEO_HEIGHT", "Apply a height to all videos in this gallery (pixels)")
         );
         if(!$this->exists()) {
-            $heightField = $heightField->setValue( self::getDefaultHeight() );
+            $heightField = $heightField->setValue(self::getDefaultHeight());
         }
+
         $fields->addFieldsToTab(
-            'Root.Settings', [
+            'Root.Settings',
+            [
                 $heightField,
                 DropdownField::create(
                     "GalleryStyle",
-                    _t(__CLASS__ . ".STYLE", "Gallery style"),
+                    _t(self::class . ".STYLE", "Gallery style"),
                     [
                         "default" => "Default style",
                         "card" => "Cards with links",
@@ -132,7 +132,8 @@ class ElementVideoGallery extends ElementContent {
     }
 
 
-    public function SortedVideos() {
+    public function SortedVideos()
+    {
         return $this->Videos()->Sort('Sort');
     }
 

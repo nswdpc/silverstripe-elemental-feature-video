@@ -1,4 +1,5 @@
 <?php
+
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use SilverStripe\Control\Controller;
@@ -20,69 +21,42 @@ use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 /**
  * Images in an ElementVideo
  */
-class GalleryVideo extends DataObject implements VideoDefaults {
-
+class GalleryVideo extends DataObject implements VideoDefaults
+{
     use VideoFromProvider;
 
-    /**
-     * @var string
-     */
-    private static $table_name = 'GalleryVideo';
+    private static string $table_name = 'GalleryVideo';
+
+    private static bool $versioned_gridfield_extensions = true;
+
+    private static string $singular_name = 'Video';
+
+    private static string $plural_name = 'Videos';
+
+    private static string $default_sort = 'Sort';
+
+    private static array $allowed_file_types = ["jpg","jpeg","gif","png","webp"];
+
+    private static string $folder_name = 'videos';
+
+    private static string $allow_attribute = 'autoplay; fullscreen; picture-in-picture';
 
     /**
      * @var string
      */
-    private static $versioned_gridfield_extensions = true;
+    public const PROVIDER_VIMEO = 'vimeo';
 
     /**
      * @var string
      */
-    private static $singular_name = 'Video';
+    public const PROVIDER_YOUTUBE = 'youtube';
 
     /**
      * @var string
      */
-    private static $plural_name = 'Videos';
+    public const PROVIDER_YOUTUBE_NOCOOKIE = 'youtube-nocookie';
 
-    /**
-     * @var string
-     */
-    private static $default_sort = 'Sort';
-
-    /**
-     * @var array
-     */
-    private static $allowed_file_types = ["jpg","jpeg","gif","png","webp"];
-
-    /**
-     * @var string
-     */
-    private static $folder_name = 'videos';
-
-    /**
-     * @var string
-     */
-    private static $allow_attribute = 'autoplay; fullscreen; picture-in-picture';
-
-    /**
-     * @var string
-     */
-    const PROVIDER_VIMEO = 'vimeo';
-
-    /**
-     * @var string
-     */
-    const PROVIDER_YOUTUBE = 'youtube';
-
-    /**
-     * @var string
-     */
-    const PROVIDER_YOUTUBE_NOCOOKIE = 'youtube-nocookie';
-
-    /**
-     * @var array
-     */
-    private static $db = [
+    private static array $db = [
         'Title' => 'Varchar(255)',
         'Video' => 'Varchar(255)',
         'Provider' => 'Varchar',
@@ -93,19 +67,13 @@ class GalleryVideo extends DataObject implements VideoDefaults {
         'UseVideoThumbnail' => 'Boolean'
     ];
 
-    /**
-     * @var array
-     */
-    private static $has_one = [
+    private static array $has_one = [
         'Image' => Image::class,
         'Parent' => ElementVideoGallery::class,
         'LinkTarget' => Link::class
     ];
 
-    /**
-     * @var array
-     */
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Image.CMSThumbnail' => 'Image',
         'Title' => 'Title',
         'Video' => 'Video Id',
@@ -113,27 +81,18 @@ class GalleryVideo extends DataObject implements VideoDefaults {
         'Parent.DropdownTitle' => 'Gallery'
     ];
 
-    /**
-     * @var array
-     */
-    private static $searchable_fields = [
+    private static array $searchable_fields = [
         'Title' => 'PartialMatchFilter',
         'Video' => 'PartialMatchFilter',
         'Provider' => 'PartialMatchFilter',
         'Description' => 'PartialMatchFilter'
     ];
 
-    /**
-     * @var array
-     */
-    private static $owns = [
+    private static array $owns = [
         'Image'
     ];
 
-    /**
-     * @var array
-     */
-    private static $extensions = [
+    private static array $extensions = [
         Versioned::class
     ];
 
@@ -141,35 +100,39 @@ class GalleryVideo extends DataObject implements VideoDefaults {
      * Default height of video, if none specified
      * @var int
      */
-    const DEFAULT_HEIGHT = 360;
+    public const DEFAULT_HEIGHT = 360;
 
     /**
      * Allowed file types for the video image
      */
-    public function getAllowedFileTypes() : array {
+    public function getAllowedFileTypes(): array
+    {
         $types = $this->config()->get('allowed_file_types');
         if(empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
         }
-        $types = array_unique($types);
-        return $types;
+
+        return array_unique($types);
     }
 
     /**
      * Folder name for uploaded thumbnails
      */
-    public function getFolderName() : string {
+    public function getFolderName(): string
+    {
         $folder_name = $this->config()->get('folder_name');
         if(!$folder_name) {
             $folder_name = "videos";
         }
+
         return $folder_name;
     }
 
     /**
      * Apply changes on write
      */
-    public function onBeforeWrite() {
+    public function onBeforeWrite()
+    {
         parent::onBeforeWrite();
         $this->validateVideoCode($this->Video);
         // update the OEmbed image value
@@ -180,7 +143,8 @@ class GalleryVideo extends DataObject implements VideoDefaults {
      * CMS fields for video management
      *
      */
-    public function getCMSFields() {
+    public function getCMSFields()
+    {
         $fields = parent::getCMSFields();
 
         $fields->removeByName(['ParentID', 'LinkTargetID', 'Sort']);
@@ -190,13 +154,13 @@ class GalleryVideo extends DataObject implements VideoDefaults {
                 'Root.Main',
                 DropdownField::create(
                     'ParentID',
-                    _t(__CLASS__ . '.CHOOSE_A_GALLERY', 'Choose a video gallery'),
+                    _t(self::class . '.CHOOSE_A_GALLERY', 'Choose a video gallery'),
                     ElementVideoGallery::get()
                         ->sort('Title ASC')
-                        ->map("ID","DropdownTitle")
+                        ->map("ID", "DropdownTitle")
                 )->setDescription(
                     _t(
-                        __CLASS__ . '.CHOOSE_A_GALLERY_DESCRIPTION',
+                        self::class . '.CHOOSE_A_GALLERY_DESCRIPTION',
                         'Changing the gallery will move the video to that gallery'
                     ),
                 )->setEmptyString(''),
@@ -208,9 +172,9 @@ class GalleryVideo extends DataObject implements VideoDefaults {
         $description = '';
         if($this->Video && $this->Provider) {
             $embedURL = $this->EmbedURL();
-            if($embedURL) {
+            if($embedURL !== '') {
                 $description = _t(
-                    __CLASS__ . ".VIDEO_EMBED_URL",
+                    self::class . ".VIDEO_EMBED_URL",
                     "The following URL will be used: <code>{embedURL}</code>",
                     [
                         'embedURL' => $embedURL
@@ -220,20 +184,22 @@ class GalleryVideo extends DataObject implements VideoDefaults {
         }
 
         $fields->addFieldsToTab(
-            'Root.Main', [
+            'Root.Main',
+            [
                 OptionsetField::create(
                     'Provider',
-                    _t(__CLASS__ . '.PROVIDER', 'Choose a video source'),
+                    _t(self::class . '.PROVIDER', 'Choose a video source'),
                     $this->getVideoProviders()
                 ),
                 TextField::create(
                     'Video',
                     _t(
-                        __CLASS__ . 'VIDEO_ID_VALUE', 'Enter the video identifier/code. The embed URL for the video will be automatically created based on this value.'
+                        self::class . 'VIDEO_ID_VALUE',
+                        'Enter the video identifier/code. The embed URL for the video will be automatically created based on this value.'
                     )
                 )->setRightTitle(
                     _t(
-                        __CLASS__ . ".VIDEO_EMBED_DESCRIPTION",
+                        self::class . ".VIDEO_EMBED_DESCRIPTION",
                         "Example: oJL-lCzEXgI from  https://www.youtube.com/embed/oJL-lCzEXgI"
                     )
                 )->setDescription(
@@ -242,20 +208,21 @@ class GalleryVideo extends DataObject implements VideoDefaults {
                 TextareaField::create(
                     'Description',
                     _t(
-                        __CLASS__ . 'DESCRIPTION', 'Description'
+                        self::class . 'DESCRIPTION',
+                        'Description'
                     )
                 ),
                 UploadField::create(
                     'Image',
                     _t(
-                        __CLASS__ . '.SLIDE_IMAGE',
+                        self::class . '.SLIDE_IMAGE',
                         'Image'
                     )
-                )->setFolderName( $this->getFolderName() . '/' . $this->ID)
+                )->setFolderName($this->getFolderName() . '/' . $this->ID)
                 ->setAllowedExtensions($this->getAllowedFileTypes())
                 ->setDescription(
                     _t(
-                        __CLASS__ . 'ALLOWED_FILE_TYPES',
+                        self::class . 'ALLOWED_FILE_TYPES',
                         'Allowed file types: {types}',
                         [
                             'types' => implode(",", $this->getAllowedFileTypes())
@@ -265,14 +232,15 @@ class GalleryVideo extends DataObject implements VideoDefaults {
                 HTMLEditorField::create(
                     'Transcript',
                     _t(
-                        __CLASS__ . '.TRANSCRIPT',
+                        self::class . '.TRANSCRIPT',
                         'Transcript of video'
                     )
                 ),
                 InlineLinkCompositeField::create(
                     'LinkTarget',
                     _t(
-                        __CLASS__ . 'LINKTARGET', 'Link'
+                        self::class . 'LINKTARGET',
+                        'Link'
                     ),
                     $this
                 )
@@ -284,11 +252,13 @@ class GalleryVideo extends DataObject implements VideoDefaults {
             ReadonlyField::create(
                 'VideoThumbnail',
                 _t(
-                    __CLASS__ . 'VIDEO_THUMBNAIL', 'Video thumbnail'
+                    self::class . 'VIDEO_THUMBNAIL',
+                    'Video thumbnail'
                 ),
             )->setDescription(
                 _t(
-                    __CLASS__ . 'VIDEO_THUMBNAIL_DESCRIPTION', 'The automatically discovered video thumbnail, if found. Copy and paste the URL into a browser to view it.'
+                    self::class . 'VIDEO_THUMBNAIL_DESCRIPTION',
+                    'The automatically discovered video thumbnail, if found. Copy and paste the URL into a browser to view it.'
                 ),
             )
         );
@@ -296,7 +266,8 @@ class GalleryVideo extends DataObject implements VideoDefaults {
         if($imageField = $fields->dataFieldByName('Image')) {
             $imageField->setTitle(
                 _t(
-                    __CLASS__ . 'IMAGE_SPECIFIC_THUMBNAIL', 'Upload an image to use as the thumbnail'
+                    self::class . 'IMAGE_SPECIFIC_THUMBNAIL',
+                    'Upload an image to use as the thumbnail'
                 )
             );
         }
@@ -306,11 +277,12 @@ class GalleryVideo extends DataObject implements VideoDefaults {
             DropdownField::create(
                 'UseVideoThumbnail',
                 _t(
-                    __CLASS__ . 'VIDEO_THUMBNAIL_TO_USE', 'Select which thumbnail to use, if it exists'
+                    self::class . 'VIDEO_THUMBNAIL_TO_USE',
+                    'Select which thumbnail to use, if it exists'
                 ),
                 [
-                    0 => _t(__CLASS__ . 'IMAGE_UPLOADED', 'Image uploaded'),
-                    1 => _t(__CLASS__ . 'VIDEO_THUMBNAIL_FOUND', 'Video thumbnail found')
+                    0 => _t(self::class . 'IMAGE_UPLOADED', 'Image uploaded'),
+                    1 => _t(self::class . 'VIDEO_THUMBNAIL_FOUND', 'Video thumbnail found')
                 ]
             )
         );
@@ -320,9 +292,9 @@ class GalleryVideo extends DataObject implements VideoDefaults {
 
     /**
      * Return default video height
-     * @return int
      */
-    public function getDefaultVideoHeight() : int {
+    public function getDefaultVideoHeight(): int
+    {
         return self::DEFAULT_HEIGHT;
     }
 
@@ -330,22 +302,25 @@ class GalleryVideo extends DataObject implements VideoDefaults {
      * Title for symbiote/silverstripe-multirecordfield
      * @return string
      */
-    public function getMultiRecordEditingTitle() {
+    public function getMultiRecordEditingTitle()
+    {
         return $this->singular_name();
     }
 
     /**
      * Render this record into a template
      */
-    public function forTemplate() {
+    public function forTemplate()
+    {
         $this->addEmbedRequirements();
-        return $this->renderWith([$this->class, __CLASS__]);
+        return $this->renderWith([$this->class, self::class]);
     }
 
     /**
      * Return allow="" value for <iframe>
      */
-    public function AllowAttribute() : string {
+    public function AllowAttribute(): string
+    {
         $value = $this->config()->get('allow_attribute');
         return is_string($value) ? $value : '';
     }

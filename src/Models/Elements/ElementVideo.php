@@ -3,7 +3,7 @@
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use DNADesign\Elemental\Models\BaseElement;
-use gorriecoe\Embed\Extensions\Embeddable;
+use NSWDPC\Embed\Extensions\Embeddable;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
@@ -16,81 +16,61 @@ use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
  */
 class ElementVideo extends BaseElement
 {
+    private static string $table_name = 'ElementVideo';
 
-    /**
-     * @var string
-     */
-    private static $table_name = 'ElementVideo';
+    private static string $icon = 'font-icon-block-media';
 
-    /**
-     * @var string
-     */
-    private static $icon = 'font-icon-block-media';
+    private static string $singular_name = 'Video via embed URL';
 
-    /**
-     * @var string
-     */
-    private static $singular_name = 'Video via embed URL';
-
-    /**
-     * @var string
-     */
-    private static $plural_name = 'Videos via embed URL';
+    private static string $plural_name = 'Videos via embed URL';
 
 
-    /**
-     * @var string
-     */
-    private static $title = 'Video via embed URL';
+    private static string $title = 'Video via embed URL';
 
-    /**
-     * @var string
-     */
-    private static $description = "Display a video using an embed URL";
+    private static string $description = "Display a video using an embed URL";
 
-    /**
-     * @var array
-     */
-    private static $db = [
+    private static array $db = [
         'Caption' => 'Text',
         'AltVideoURL' => 'Varchar(1024)',
         'Transcript' => 'HTMLText'
     ];
 
-    /**
-     * @var string
-     */
-    private static $embed_folder = 'Uploads/images';
+    private static string $embed_folder = 'Uploads/images';
 
     /**
      * Element type
      */
     public function getType()
     {
-        return _t(__CLASS__ . '.BlockType', 'Video (embed)');
+        return _t(self::class . '.BlockType', 'Video (embed)');
     }
 
     /**
      * Embeddable
      */
-    private static $extensions = [
+    private static array $extensions = [
         Embeddable::class,
     ];
 
     /**
      * List the allowed included embed types.  If null all are allowed.
-     * @var array
      */
-    private static $allowed_embed_types = [
+    private static array $allowed_embed_types = [
         'video'
     ];
 
     /**
      * Defines tab to insert the embed fields into.
-     * @var string
      */
-    private static $embed_tab = 'Main';
+    private static string $embed_tab = 'Main';
 
+    /**
+     * Override the return of EmbedType
+     */
+    public function getEmbedType(): string
+    {
+        return Embeddable::EMBED_TYPE_VIDEO;
+    }
 
     /**
      * CMS fields for editing
@@ -100,12 +80,22 @@ class ElementVideo extends BaseElement
         $fields = parent::getCMSFields();
         $fields->removeByName(['EmbedTitle', 'EmbedImage', 'EmbedDescription']);
 
+        $fields->push(
+            TextareaField::create(
+                'Caption',
+                _t(
+                    self::class . '.CAPTION',
+                    'Caption'
+                )
+            )
+        );
+
         $fields->insertAfter(
-            'EmbedSourceURL',
+            'Caption',
             HTMLEditorField::create(
                 'Transcript',
                 _t(
-                    __CLASS__ . '.TRANSCRIPT',
+                    self::class . '.TRANSCRIPT',
                     'Transcript of video'
                 )
             )
@@ -113,24 +103,17 @@ class ElementVideo extends BaseElement
         );
 
         $fields->insertAfter(
-            'EmbedSourceURL',
+            'Caption',
             TextField::create(
                 'AltVideoURL',
                 _t(
-                    __CLASS__ . '.ALTVIDEO',
+                    self::class . '.ALTVIDEO',
                     'Alternate video with audio captions enabled'
                 )
-            )
-            ->setDescription('Specify a external URL')
-        );
-
-        $fields->insertAfter(
-            'EmbedSourceURL',
-            TextareaField::create(
-                'Caption',
+            )->setDescription(
                 _t(
-                    __CLASS__ . '.CAPTION',
-                    'Caption'
+                    self::class . '.SPECIFY_EXTERNAL_URL',
+                    'Specify an external URL'
                 )
             )
         );

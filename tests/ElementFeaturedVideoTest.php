@@ -14,11 +14,12 @@ use SilverStripe\ORM\ValidationException;
 /**
  * Provide tests for element featured video
  */
-class ElementFeaturedVideoTest extends SapphireTest {
-
+class ElementFeaturedVideoTest extends SapphireTest
+{
     protected $usesDatabase =  true;
 
-    public function testThumbWidthHeight() {
+    public function testThumbWidthHeight(): void
+    {
         $video = ElementFeaturedVideo::create();
         $video->Provider = YouTube::getProviderCode();
         $video->Video = "testyoutube";
@@ -33,7 +34,8 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $this->assertEquals(603, $video->getThumbHeight());
     }
 
-    public function testDefaultThumbWidthHeight() {
+    public function testDefaultThumbWidthHeight(): void
+    {
         $video = ElementFeaturedVideo::create();
         $video->Provider = YouTube::getProviderCode();
         $video->Video = "testyoutube";
@@ -48,7 +50,8 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $this->assertEquals($video->config()->get('default_thumb_height'), $video->getThumbHeight());
     }
 
-    public function testValidationWrite() {
+    public function testValidationWrite(): void
+    {
         try {
             $video = ElementFeaturedVideo::create();
             $video->Provider = YouTube::getProviderCode();
@@ -59,12 +62,13 @@ class ElementFeaturedVideoTest extends SapphireTest {
             $video->Transcript = "<p>YouTube Transcript</p>";
             $video->write();
             $this->assertFalse($video->IsInDB());
-        } catch (ValidationException $e) {
-            $this->assertNotEmpty($e->getMessage());
+        } catch (ValidationException $validationException) {
+            $this->assertNotEmpty($validationException->getMessage());
         }
     }
 
-    public function testVideoHeight() {
+    public function testVideoHeight(): void
+    {
 
         $video = ElementFeaturedVideo::create();
         $video->Provider = YouTube::getProviderCode();
@@ -81,7 +85,8 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $this->assertEquals($height, $video->getVideoHeight());
     }
 
-    public function testYouTube() {
+    public function testYouTube(): void
+    {
 
         $video = ElementFeaturedVideo::create();
         $video->Provider = YouTube::getProviderCode();
@@ -91,11 +96,11 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $video->Transcript = "<p>YouTube Transcript</p>";
         $video->write();
 
-        $this->assertEquals( YouTube::getProviderCode(), $video->getVideoProviderCode() );
+        $this->assertEquals(YouTube::getProviderCode(), $video->getVideoProviderCode());
 
-        $provider = VideoProvider::getProvider( $video->Provider );
+        $provider = VideoProvider::getProvider($video->Provider);
 
-        $this->assertInstanceOf( YouTube::class, $provider );
+        $this->assertInstanceOf(YouTube::class, $provider);
 
         $url = $video->EmbedURL();
 
@@ -123,11 +128,12 @@ class ElementFeaturedVideoTest extends SapphireTest {
         asort($query);
         asort($expected);
 
-        $this->assertEquals( $expected, $query );
+        $this->assertEquals($expected, $query);
 
     }
 
-    public function testYouTubeNoCookie() {
+    public function testYouTubeNoCookie(): void
+    {
 
         $video = ElementFeaturedVideo::create();
         $video->Provider = YouTubeNoCookie::getProviderCode();
@@ -137,11 +143,11 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $video->Transcript = "<p>YouTube NoCookie Transcript</p>";
         $video->write();
 
-        $this->assertEquals( YouTubeNoCookie::getProviderCode(), $video->getVideoProviderCode() );
+        $this->assertEquals(YouTubeNoCookie::getProviderCode(), $video->getVideoProviderCode());
 
-        $provider = VideoProvider::getProvider( $video->Provider );
+        $provider = VideoProvider::getProvider($video->Provider);
 
-        $this->assertInstanceOf( YouTubeNoCookie::class, $provider );
+        $this->assertInstanceOf(YouTubeNoCookie::class, $provider);
 
         $url = $video->EmbedURL();
 
@@ -169,11 +175,12 @@ class ElementFeaturedVideoTest extends SapphireTest {
         asort($query);
         asort($expected);
 
-        $this->assertEquals( $expected, $query );
+        $this->assertEquals($expected, $query);
 
     }
 
-    public function testVimeo() {
+    public function testVimeo(): void
+    {
 
         $video = ElementFeaturedVideo::create();
         $video->Provider = Vimeo::getProviderCode();
@@ -183,11 +190,11 @@ class ElementFeaturedVideoTest extends SapphireTest {
         $video->Transcript = "<p>Vimeo Transcript</p>";
         $video->write();
 
-        $this->assertEquals( Vimeo::getProviderCode(), $video->getVideoProviderCode() );
+        $this->assertEquals(Vimeo::getProviderCode(), $video->getVideoProviderCode());
 
-        $provider = VideoProvider::getProvider( $video->Provider );
+        $provider = VideoProvider::getProvider($video->Provider);
 
-        $this->assertInstanceOf( Vimeo::class, $provider );
+        $this->assertInstanceOf(Vimeo::class, $provider);
 
         $url = $video->EmbedURL();
 
@@ -217,7 +224,7 @@ class ElementFeaturedVideoTest extends SapphireTest {
         asort($query);
         asort($expected);
 
-        $this->assertEquals( $expected, $query );
+        $this->assertEquals($expected, $query);
 
     }
 
