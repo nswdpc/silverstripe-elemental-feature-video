@@ -3,7 +3,7 @@
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use DNADesign\Elemental\Models\BaseElement;
-use gorriecoe\Embed\Extensions\Embeddable;
+use NSWDPC\Embed\Extensions\Embeddable;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
@@ -91,6 +91,12 @@ class ElementVideo extends BaseElement
      */
     private static $embed_tab = 'Main';
 
+    /**
+     * Override the return of EmbedType
+     */
+    public function getEmbedType(): string {
+        return Embeddable::EMBED_TYPE_VIDEO;
+    }
 
     /**
      * CMS fields for editing
@@ -100,8 +106,18 @@ class ElementVideo extends BaseElement
         $fields = parent::getCMSFields();
         $fields->removeByName(['EmbedTitle', 'EmbedImage', 'EmbedDescription']);
 
+        $fields->push(
+            TextareaField::create(
+                'Caption',
+                _t(
+                    __CLASS__ . '.CAPTION',
+                    'Caption'
+                )
+            )
+        );
+
         $fields->insertAfter(
-            'EmbedSourceURL',
+            'Caption',
             HTMLEditorField::create(
                 'Transcript',
                 _t(
@@ -113,24 +129,17 @@ class ElementVideo extends BaseElement
         );
 
         $fields->insertAfter(
-            'EmbedSourceURL',
+            'Caption',
             TextField::create(
                 'AltVideoURL',
                 _t(
                     __CLASS__ . '.ALTVIDEO',
                     'Alternate video with audio captions enabled'
                 )
-            )
-            ->setDescription('Specify a external URL')
-        );
-
-        $fields->insertAfter(
-            'EmbedSourceURL',
-            TextareaField::create(
-                'Caption',
+            )->setDescription(
                 _t(
-                    __CLASS__ . '.CAPTION',
-                    'Caption'
+                    self::class . '.SPECIFY_EXTERNAL_URL',
+                    'Specify an external URL'
                 )
             )
         );
