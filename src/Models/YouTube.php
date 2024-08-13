@@ -2,7 +2,7 @@
 
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
-use Silverstripe\Control\Director;
+use SilverStripe\Control\Director;
 use SilverStripe\View\Requirements;
 
 /**

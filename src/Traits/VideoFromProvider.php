@@ -3,7 +3,8 @@
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use Embed\Embed;
-use Silverstripe\Core\Convert;
+use Embed\Extractor;
+use SilverStripe\Core\Convert;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\View\Requirements;
 
@@ -172,9 +173,6 @@ trait VideoFromProvider
     {
         $inst = VideoProvider::getProvider($this->Provider);
         if($inst instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            /**
-             * @var VideoProvider
-             */
             return $inst->getVideoProviderCode();
         } else {
             return null;

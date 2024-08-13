@@ -5,7 +5,7 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 use DNADesign\Elemental\Models\ElementContent;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
-use SilverStripe\Assets\Storage\DBFile;
+use SilverStripe\Assets\Storage\AssetContainer;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\CheckboxField;
@@ -110,7 +110,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Cover image for link
      */
-    public function getCoverImage(): ?DBFile
+    public function getCoverImage(): ?AssetContainer
     {
         $image = $this->Image();
         if($image && $image->exists()) {

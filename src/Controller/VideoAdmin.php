@@ -21,7 +21,7 @@ class VideoAdmin extends ModelAdmin
     ];
 
     /**
-     * @return DataList
+     * @inheritdoc
      */
     public function getList()
     {
