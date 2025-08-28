@@ -32,16 +32,16 @@
         }
     },
     "require": {
-        "silverstripe/framework": "^5",
+        "silverstripe/framework": "^6",
         "embed/embed": "^4.4",
-        "symbiote/silverstripe-gridfieldextensions" : "^4",
-        "dnadesign/silverstripe-elemental": "^5",
-        "gorriecoe/silverstripe-linkfield" : "^1.1",
-        "nswdpc/silverstripe-embed" : "^2",
-        "silverstripe/assets" : "^2",
-        "silverstripe/asset-admin" : "^2",
-        "silverstripe/versioned": "^2",
-        "nswdpc/silverstripe-inline-linker": "^1"
+        "symbiote/silverstripe-gridfieldextensions" : "^7",
+        "dnadesign/silverstripe-elemental": "^6",
+        "gorriecoe/silverstripe-linkfield" : "*",
+        "nswdpc/silverstripe-embed" : "*",
+        "silverstripe/assets" : "^3",
+        "silverstripe/asset-admin" : "^3",
+        "silverstripe/versioned": "^3",
+        "nswdpc/silverstripe-inline-linker": "*"
     },
     "require-dev": {
         "cambis/silverstan": "^2",
@@ -49,7 +49,7 @@
         "friendsofphp/php-cs-fixer": "^3",
         "nswdpc/ci-files": "dev-v-4",
         "phpstan/phpstan": "^2",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^11.5",
         "rector/rector": "^2"
     },
     "prefer-stable": true,
