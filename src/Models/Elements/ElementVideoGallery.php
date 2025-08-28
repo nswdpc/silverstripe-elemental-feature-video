@@ -2,21 +2,18 @@
 
 namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
-use NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo;
 use DNADesign\Elemental\Models\ElementContent;
-use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
-use SilverStripe\Forms\TextareaField;
-use SilverStripe\Forms\TextField;
-use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\NumericField;
-use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 /**
  * ElementVideoGallery adds a content slider via a sortable upload field
+ * @property ?string $GalleryStyle
+ * @property int $VideoHeight
+ * @method \SilverStripe\ORM\HasManyList<\NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo> Videos()
  */
 class ElementVideoGallery extends ElementContent
 {
@@ -34,6 +31,7 @@ class ElementVideoGallery extends ElementContent
 
     private static string $plural_name = 'Video galleries';
 
+    #[\Override]
     public function getType()
     {
         return _t(self::class . '.BlockType', 'Video gallery');
@@ -66,13 +64,13 @@ class ElementVideoGallery extends ElementContent
     public function DropdownTitle(): string
     {
         $title = $this->Title;
-        if(!$title) {
+        if (!$title) {
             $title = $this->getType();
         }
 
         $page = $this->getPage();
         $suffix = "";
-        if($page && $page->exists()) {
+        if ($page && $page->exists()) {
             $suffix = " - ";
             $suffix .= _t(
                 self::class . ".ON_PAGE_TITLE",
@@ -87,6 +85,7 @@ class ElementVideoGallery extends ElementContent
         return "{$title} (#{$this->ID}){$suffix}";
     }
 
+    #[\Override]
     public function getCMSFields()
     {
 
@@ -110,7 +109,7 @@ class ElementVideoGallery extends ElementContent
             'VideoHeight',
             _t(self::class . ".VIDEO_HEIGHT", "Apply a height to all videos in this gallery (pixels)")
         );
-        if(!$this->exists()) {
+        if (!$this->exists()) {
             $heightField = $heightField->setValue(self::getDefaultHeight());
         }
 

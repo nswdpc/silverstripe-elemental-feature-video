@@ -40,7 +40,7 @@ class Vimeo extends VideoProvider
      */
     public function getPath($videoId = ''): string
     {
-        if($videoId) {
+        if ($videoId) {
             return "/video/{$videoId}/";
         } else {
             return "";
@@ -69,7 +69,7 @@ class Vimeo extends VideoProvider
      */
     public function getEmbedURL(string $videoID, array $customQueryArgs, int $videoHeight): string
     {
-        if($videoHeight > 0) {
+        if ($videoHeight > 0) {
             $customQueryArgs['height'] = $videoHeight;
         }
 

@@ -12,14 +12,27 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
-use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use gorriecoe\Link\Models\Link;
 use NSWDPC\InlineLinker\InlineLinkCompositeField;
-use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 
 /**
  * Images in an ElementVideo
+ * @property string $Title
+ * @property ?string $Video
+ * @property ?string $Provider
+ * @property ?string $Description
+ * @property int $Sort
+ * @property ?string $Transcript
+ * @property ?string $VideoThumbnail
+ * @property bool $UseVideoThumbnail
+ * @property int $ImageID
+ * @property int $ParentID
+ * @property int $LinkTargetID
+ * @method \SilverStripe\Assets\Image Image()
+ * @method \NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery Parent()
+ * @method \gorriecoe\Link\Models\Link LinkTarget()
+ * @mixin \SilverStripe\Versioned\Versioned
  */
 class GalleryVideo extends DataObject implements VideoDefaults
 {
@@ -108,7 +121,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     public function getAllowedFileTypes(): array
     {
         $types = $this->config()->get('allowed_file_types');
-        if(empty($types)) {
+        if (empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
         }
 
@@ -121,7 +134,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     public function getFolderName(): string
     {
         $folder_name = $this->config()->get('folder_name');
-        if(!$folder_name) {
+        if (!$folder_name) {
             $folder_name = "videos";
         }
 
@@ -131,6 +144,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     /**
      * Apply changes on write
      */
+    #[\Override]
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
@@ -143,13 +157,14 @@ class GalleryVideo extends DataObject implements VideoDefaults
      * CMS fields for video management
      *
      */
+    #[\Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
 
         $fields->removeByName(['ParentID', 'LinkTargetID', 'Sort']);
 
-        if(Controller::curr() instanceof VideoAdmin) {
+        if (Controller::curr() instanceof VideoAdmin) {
             $fields->addFieldToTab(
                 'Root.Main',
                 DropdownField::create(
@@ -170,9 +185,9 @@ class GalleryVideo extends DataObject implements VideoDefaults
 
 
         $description = '';
-        if($this->Video && $this->Provider) {
+        if ($this->Video && $this->Provider) {
             $embedURL = $this->EmbedURL();
-            if($embedURL !== '') {
+            if ($embedURL !== '') {
                 $description = _t(
                     self::class . ".VIDEO_EMBED_URL",
                     "The following URL will be used: <code>{embedURL}</code>",
@@ -263,7 +278,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
             )
         );
 
-        if($imageField = $fields->dataFieldByName('Image')) {
+        if ($imageField = $fields->dataFieldByName('Image')) {
             $imageField->setTitle(
                 _t(
                     self::class . 'IMAGE_SPECIFIC_THUMBNAIL',

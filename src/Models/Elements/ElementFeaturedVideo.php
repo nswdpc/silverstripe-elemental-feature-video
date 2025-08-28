@@ -8,7 +8,6 @@ use SilverStripe\Assets\Image;
 use SilverStripe\Assets\Storage\AssetContainer;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\NumericField;
-use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use gorriecoe\Link\Models\Link;
@@ -16,6 +15,15 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
 
 /**
  * ElementFeaturedVideo adds a featured video
+ * @property ?string $Video
+ * @property ?string $Provider
+ * @property int $Width
+ * @property int $Height
+ * @property ?string $Transcript
+ * @property int $ImageID
+ * @property int $FeatureLinkID
+ * @method \SilverStripe\Assets\Image Image()
+ * @method \gorriecoe\Link\Models\Link FeatureLink()
  */
 class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 {
@@ -36,6 +44,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Element type
      */
+    #[\Override]
     public function getType()
     {
         return _t(self::class . '.BlockType', 'Video (feature)');
@@ -79,7 +88,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     public function getThumbWidth(): int
     {
         $width = $this->Width;
-        if($width <= 0) {
+        if ($width <= 0) {
             $width = $this->config()->get('default_thumb_width');
         }
 
@@ -92,7 +101,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     public function getThumbHeight(): int
     {
         $height = $this->Height;
-        if($height <= 0) {
+        if ($height <= 0) {
             $height = $this->config()->get('default_thumb_height');
         }
 
@@ -113,12 +122,12 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     public function getCoverImage(): ?AssetContainer
     {
         $image = $this->Image();
-        if($image && $image->exists()) {
+        if ($image && $image->exists()) {
             $width = $this->getThumbWidth();
             $height = $this->getThumbHeight();
-            if($width > 0 && $height > 0) {
+            if ($width > 0 && $height > 0) {
                 return $image->FillMax($width, $height);
-            } elseif($width > 0) {
+            } elseif ($width > 0) {
                 return $image->ScaleWidth($width);
             } else {
                 return $image;
@@ -134,7 +143,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     public function getAllowedFileTypes(): array
     {
         $types = $this->config()->get('allowed_file_types');
-        if(empty($types)) {
+        if (empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
         }
 
@@ -144,6 +153,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Handle before write
      */
+    #[\Override]
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
@@ -163,6 +173,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Return fields for the CMS
      */
+    #[\Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
@@ -252,6 +263,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function forTemplate($holder = true)
     {
         $this->addEmbedRequirements();
