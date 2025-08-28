@@ -76,6 +76,7 @@ class YouTube extends VideoProvider
     /**
      * Include the YT iframe API (if enabled)
      */
+    #[\Override]
     public function addEmbedRequirements(): bool
     {
         if(!self::config()->get('enable_iframe_api')) {

@@ -20,6 +20,21 @@ use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 
 /**
  * Images in an ElementVideo
+ * @property string $Title
+ * @property ?string $Video
+ * @property ?string $Provider
+ * @property ?string $Description
+ * @property int $Sort
+ * @property ?string $Transcript
+ * @property ?string $VideoThumbnail
+ * @property bool $UseVideoThumbnail
+ * @property int $ImageID
+ * @property int $ParentID
+ * @property int $LinkTargetID
+ * @method \SilverStripe\Assets\Image Image()
+ * @method \NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery Parent()
+ * @method \gorriecoe\Link\Models\Link LinkTarget()
+ * @mixin \SilverStripe\Versioned\Versioned
  */
 class GalleryVideo extends DataObject implements VideoDefaults
 {
@@ -131,6 +146,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     /**
      * Apply changes on write
      */
+    #[\Override]
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
@@ -143,6 +159,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
      * CMS fields for video management
      *
      */
+    #[\Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();

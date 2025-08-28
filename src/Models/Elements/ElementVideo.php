@@ -13,6 +13,10 @@ use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
  * Note (YouTube) that this element uses the standard YouTube domain for embedding a video
  * @author James
  * @author Mark
+ * @property ?string $Caption
+ * @property ?string $AltVideoURL
+ * @property ?string $Transcript
+ * @mixin \NSWDPC\Embed\Extensions\Embeddable
  */
 class ElementVideo extends BaseElement
 {
@@ -40,6 +44,7 @@ class ElementVideo extends BaseElement
     /**
      * Element type
      */
+    #[\Override]
     public function getType()
     {
         return _t(self::class . '.BlockType', 'Video (embed)');
@@ -75,6 +80,7 @@ class ElementVideo extends BaseElement
     /**
      * CMS fields for editing
      */
+    #[\Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();

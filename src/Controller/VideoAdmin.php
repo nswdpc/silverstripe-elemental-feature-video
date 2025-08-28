@@ -23,6 +23,7 @@ class VideoAdmin extends ModelAdmin
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function getList()
     {
         $list = parent::getList();

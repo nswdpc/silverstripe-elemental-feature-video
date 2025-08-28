@@ -11,6 +11,7 @@ class YouTubeNoCookie extends YouTube
     /**
      * @inheritdoc
      */
+    #[\Override]
     public static function getProviderCode(): string
     {
         return GalleryVideo::PROVIDER_YOUTUBE_NOCOOKIE;
@@ -19,6 +20,7 @@ class YouTubeNoCookie extends YouTube
     /**
      * @inheritdoc
      */
+    #[\Override]
     public static function getProviderDescription(): string
     {
         return _t(
@@ -30,6 +32,7 @@ class YouTubeNoCookie extends YouTube
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function getHost(): string
     {
         return "www.youtube-nocookie.com";

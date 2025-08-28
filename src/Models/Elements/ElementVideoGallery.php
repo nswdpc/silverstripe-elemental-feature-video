@@ -17,6 +17,9 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 /**
  * ElementVideoGallery adds a content slider via a sortable upload field
+ * @property ?string $GalleryStyle
+ * @property int $VideoHeight
+ * @method \SilverStripe\ORM\HasManyList<\NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo> Videos()
  */
 class ElementVideoGallery extends ElementContent
 {
@@ -34,6 +37,7 @@ class ElementVideoGallery extends ElementContent
 
     private static string $plural_name = 'Video galleries';
 
+    #[\Override]
     public function getType()
     {
         return _t(self::class . '.BlockType', 'Video gallery');
@@ -87,6 +91,7 @@ class ElementVideoGallery extends ElementContent
         return "{$title} (#{$this->ID}){$suffix}";
     }
 
+    #[\Override]
     public function getCMSFields()
     {
 

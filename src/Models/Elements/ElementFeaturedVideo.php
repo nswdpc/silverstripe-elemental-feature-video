@@ -16,6 +16,15 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
 
 /**
  * ElementFeaturedVideo adds a featured video
+ * @property ?string $Video
+ * @property ?string $Provider
+ * @property int $Width
+ * @property int $Height
+ * @property ?string $Transcript
+ * @property int $ImageID
+ * @property int $FeatureLinkID
+ * @method \SilverStripe\Assets\Image Image()
+ * @method \gorriecoe\Link\Models\Link FeatureLink()
  */
 class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 {
@@ -36,6 +45,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Element type
      */
+    #[\Override]
     public function getType()
     {
         return _t(self::class . '.BlockType', 'Video (feature)');
@@ -144,6 +154,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Handle before write
      */
+    #[\Override]
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
@@ -163,6 +174,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Return fields for the CMS
      */
+    #[\Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
@@ -252,6 +264,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function forTemplate($holder = true)
     {
         $this->addEmbedRequirements();
