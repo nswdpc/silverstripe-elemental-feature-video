@@ -4,8 +4,6 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use Embed\Embed;
 use Embed\Extractor;
-use SilverStripe\Core\Convert;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\View\Requirements;
 
 /**
@@ -51,9 +49,9 @@ trait VideoFromProvider
     public function getVideoHeight(): int
     {
         $parent = $this->Parent();
-        if($parent && $parent->VideoHeight > 0) {
+        if ($parent && $parent->VideoHeight > 0) {
             return $parent->VideoHeight;
-        } elseif($this->videoHeight > 0) {
+        } elseif ($this->videoHeight > 0) {
             return $this->videoHeight;
         } else {
             return $this->getDefaultVideoHeight();
@@ -65,7 +63,7 @@ trait VideoFromProvider
      */
     public function validateVideoCode($videoCode)
     {
-        if(preg_match("/^http(s)?:\/\//", (string) $videoCode)) {
+        if (preg_match("/^http(s)?:\/\//", (string) $videoCode)) {
             throw \SilverStripe\ORM\ValidationException::create(_t(
                 self::class . ".VIDEO_ID_NOT_URL",
                 "Please use the video id from the embed URL, not the URL itself"
@@ -86,7 +84,7 @@ trait VideoFromProvider
      */
     protected function addEmbedRequirements(): void
     {
-        if(($provider = VideoProvider::getProvider($this->Provider)) instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
+        if (($provider = VideoProvider::getProvider($this->Provider)) instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             // Add any provider requirements
             $provider->addEmbedRequirements();
         }
@@ -98,7 +96,7 @@ trait VideoFromProvider
     public function EmbedURL(): string
     {
         $provider = VideoProvider::getProvider($this->Provider);
-        if($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
+        if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getEmbedURL($this->getVideoid(), [], $this->getVideoHeight());
         } else {
             return "";
@@ -111,7 +109,7 @@ trait VideoFromProvider
     public function WatchURL(): string
     {
         $provider = VideoProvider::getProvider($this->Provider);
-        if($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
+        if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getWatchURL($this->getVideoid(), []);
         } else {
             return "";
@@ -134,7 +132,7 @@ trait VideoFromProvider
     public function getOEmbedData($force = false)
     {
         try {
-            if(is_null($this->oEmbedData) || $force) {
+            if (is_null($this->oEmbedData) || $force) {
                 $watchURL = $this->WatchURL();
                 $embed = new Embed();
                 $this->oEmbedData = $embed->get($watchURL);
@@ -155,7 +153,7 @@ trait VideoFromProvider
         $value = null;
         try {
             $info = $this->getOEmbedData();
-            if($image = $info->image) {
+            if ($image = $info->image) {
                 $value = $info->image->__toString();
             }
         } catch (\Exception) {
@@ -172,7 +170,7 @@ trait VideoFromProvider
     public function getVideoProviderCode(): ?string
     {
         $inst = VideoProvider::getProvider($this->Provider);
-        if($inst instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
+        if ($inst instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $inst->getVideoProviderCode();
         } else {
             return null;

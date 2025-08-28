@@ -12,11 +12,9 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
-use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use gorriecoe\Link\Models\Link;
 use NSWDPC\InlineLinker\InlineLinkCompositeField;
-use NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery;
 
 /**
  * Images in an ElementVideo
@@ -123,7 +121,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     public function getAllowedFileTypes(): array
     {
         $types = $this->config()->get('allowed_file_types');
-        if(empty($types)) {
+        if (empty($types)) {
             $types = ["jpg","jpeg","gif","png","webp"];
         }
 
@@ -136,7 +134,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     public function getFolderName(): string
     {
         $folder_name = $this->config()->get('folder_name');
-        if(!$folder_name) {
+        if (!$folder_name) {
             $folder_name = "videos";
         }
 
@@ -166,7 +164,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
 
         $fields->removeByName(['ParentID', 'LinkTargetID', 'Sort']);
 
-        if(Controller::curr() instanceof VideoAdmin) {
+        if (Controller::curr() instanceof VideoAdmin) {
             $fields->addFieldToTab(
                 'Root.Main',
                 DropdownField::create(
@@ -187,9 +185,9 @@ class GalleryVideo extends DataObject implements VideoDefaults
 
 
         $description = '';
-        if($this->Video && $this->Provider) {
+        if ($this->Video && $this->Provider) {
             $embedURL = $this->EmbedURL();
-            if($embedURL !== '') {
+            if ($embedURL !== '') {
                 $description = _t(
                     self::class . ".VIDEO_EMBED_URL",
                     "The following URL will be used: <code>{embedURL}</code>",
@@ -280,7 +278,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
             )
         );
 
-        if($imageField = $fields->dataFieldByName('Image')) {
+        if ($imageField = $fields->dataFieldByName('Image')) {
             $imageField->setTitle(
                 _t(
                     self::class . 'IMAGE_SPECIFIC_THUMBNAIL',

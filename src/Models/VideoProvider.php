@@ -62,8 +62,8 @@ abstract class VideoProvider
     public static function getProvider($code): ?VideoProvider
     {
         $providers = self::getProviders();
-        foreach($providers as $providerClass) {
-            if($providerClass::getProviderCode() == $code) {
+        foreach ($providers as $providerClass) {
+            if ($providerClass::getProviderCode() == $code) {
                 return Injector::inst()->create($providerClass);
             }
         }
@@ -78,7 +78,7 @@ abstract class VideoProvider
     {
         $selection = [];
         $providers = self::getProviders();
-        foreach($providers as $providerClass) {
+        foreach ($providers as $providerClass) {
             $inst = Injector::inst()->create($providerClass);
             $selection[ $inst->getProviderCode() ] = $inst->getProviderDescription();
         }

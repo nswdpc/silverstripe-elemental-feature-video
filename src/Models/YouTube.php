@@ -50,7 +50,7 @@ class YouTube extends VideoProvider
      */
     public function getPath($videoId = ''): string
     {
-        if($videoId) {
+        if ($videoId) {
             return "/embed/{$videoId}/";
         } else {
             return "";
@@ -79,7 +79,7 @@ class YouTube extends VideoProvider
     #[\Override]
     public function addEmbedRequirements(): bool
     {
-        if(!self::config()->get('enable_iframe_api')) {
+        if (!self::config()->get('enable_iframe_api')) {
             return false;
         } else {
             Requirements::javascript(
