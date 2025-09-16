@@ -15,6 +15,7 @@ use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use gorriecoe\Link\Models\Link;
 use NSWDPC\InlineLinker\InlineLinkCompositeField;
+use Symbiote\MultiValueField\Fields\KeyValueField;
 
 /**
  * Images in an ElementVideo
@@ -77,7 +78,8 @@ class GalleryVideo extends DataObject implements VideoDefaults
         'Sort' => 'Int',
         'Transcript' => 'HTMLText',
         'VideoThumbnail' => 'Varchar(255)',
-        'UseVideoThumbnail' => 'Boolean'
+        'UseVideoThumbnail' => 'Boolean',
+        'CustomQueryArgs' => 'Text'
     ];
 
     private static array $has_one = [
@@ -299,6 +301,16 @@ class GalleryVideo extends DataObject implements VideoDefaults
                     0 => _t(self::class . 'IMAGE_UPLOADED', 'Image uploaded'),
                     1 => _t(self::class . 'VIDEO_THUMBNAIL_FOUND', 'Video thumbnail found')
                 ]
+            )
+        );
+
+        $fields->insertAfter('VideoID', 
+            KeyValueField::create(
+                'CustomQueryArgs',
+                _t(
+                    self::class . 'CUSTOM_QUERY_ARGS',
+                    'Custom URL Parameters'
+                )
             )
         );
 

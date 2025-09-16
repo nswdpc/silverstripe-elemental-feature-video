@@ -79,6 +79,32 @@ trait VideoFromProvider
         return $this->Video;
     }
 
+    /* 
+     * Method to wrap retrieval of custom query args
+     */
+    public function getCustomQueryArgs(): array
+    {
+        $raw = $this->getField('CustomQueryArgs');
+        if (!isset($raw)) {
+            return [];
+        }
+
+        $decoded = json_decode($raw, true);
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    public function setCustomQueryArgs(array $value): self
+    {
+        if (is_array($value)) {
+            $this->setField('CustomQueryArgs', json_encode($value));
+        } elseif (!isset($value)) {
+            // Do nothing
+        } else {
+            error_log('setCustomQueryArgs invalid value');
+        }
+        return $this;
+    }
+
     /**
      * Add an requirements used by the video provider to support video embedding
      */
@@ -97,7 +123,7 @@ trait VideoFromProvider
     {
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            return $provider->getEmbedURL($this->getVideoid(), [], $this->getVideoHeight());
+            return $provider->getEmbedURL($this->getVideoid(),$this->getCustomQueryArgs(), $this->getVideoHeight());
         } else {
             return "";
         }
@@ -110,7 +136,7 @@ trait VideoFromProvider
     {
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            return $provider->getWatchURL($this->getVideoid(), []);
+            return $provider->getWatchURL($this->getVideoid(), $this->getCustomQueryArgs());
         } else {
             return "";
         }
