@@ -13,9 +13,9 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use Symbiote\MultiValueField\Fields\KeyValueField;
 use gorriecoe\Link\Models\Link;
 use NSWDPC\InlineLinker\InlineLinkCompositeField;
-use Symbiote\MultiValueField\Fields\KeyValueField;
 
 /**
  * Images in an ElementVideo
