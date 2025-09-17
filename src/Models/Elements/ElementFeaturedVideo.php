@@ -25,6 +25,7 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
  * @property int $FeatureLinkID
  * @method \SilverStripe\Assets\Image Image()
  * @method \gorriecoe\Link\Models\Link FeatureLink()
+ * @property mixed[] $CustomQueryArgs
  */
 class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 {

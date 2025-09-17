@@ -34,6 +34,7 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
  * @method \NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery Parent()
  * @method \gorriecoe\Link\Models\Link LinkTarget()
  * @mixin \SilverStripe\Versioned\Versioned
+ * @property mixed[] $CustomQueryArgs
  */
 class GalleryVideo extends DataObject implements VideoDefaults
 {
