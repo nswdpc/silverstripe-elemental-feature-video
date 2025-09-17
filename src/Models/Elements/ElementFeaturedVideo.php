@@ -261,7 +261,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         );
 
 
-        $fields->insertAfter('VideoID', 
+        $fields->insertAfter(
+            'VideoID',
             KeyValueField::create(
                 'CustomQueryArgs',
                 _t(

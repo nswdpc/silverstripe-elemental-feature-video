@@ -228,7 +228,8 @@ class ElementFeaturedVideoTest extends SapphireTest
 
     }
 
-    public function testEmbedURL(): void {
+    public function testEmbedURL(): void
+    {
         $video = ElementFeaturedVideo::create();
         $video->Provider = Vimeo::getProviderCode();
         $video->Video = "testvimeo";

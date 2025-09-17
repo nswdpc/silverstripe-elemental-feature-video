@@ -79,7 +79,7 @@ trait VideoFromProvider
         return $this->Video;
     }
 
-    /* 
+    /*
      * Methods for decoding and encoding the array of custom query args into json
      */
     public function getCustomQueryArgs(): array
@@ -124,7 +124,7 @@ trait VideoFromProvider
     {
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            return $provider->getEmbedURL($this->getVideoid(),$this->getCustomQueryArgs(), $this->getVideoHeight());
+            return $provider->getEmbedURL($this->getVideoid(), $this->getCustomQueryArgs(), $this->getVideoHeight());
         } else {
             return "";
         }
