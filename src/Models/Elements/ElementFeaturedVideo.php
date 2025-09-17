@@ -10,9 +10,9 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use Symbiote\MultiValueField\Fields\KeyValueField;
 use gorriecoe\Link\Models\Link;
 use NSWDPC\InlineLinker\InlineLinkCompositeField;
-use Symbiote\MultiValueField\Fields\KeyValueField;
 
 /**
  * ElementFeaturedVideo adds a featured video
@@ -195,7 +195,6 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
                         'Video ID'
                     )
                 ),
-
                 InlineLinkCompositeField::create(
                     'FeatureLink',
                     _t(
@@ -261,7 +260,6 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         );
 
 
-        # Extract the query parameters from the DB text
         $fields->insertAfter('VideoID', 
             KeyValueField::create(
                 'CustomQueryArgs',

@@ -80,7 +80,7 @@ trait VideoFromProvider
     }
 
     /* 
-     * Method to wrap retrieval of custom query args
+     * Methods for decoding and encoding the array of custom query args into json
      */
     public function getCustomQueryArgs(): array
     {
