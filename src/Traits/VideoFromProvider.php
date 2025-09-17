@@ -102,6 +102,7 @@ trait VideoFromProvider
         } else {
             error_log('setCustomQueryArgs invalid value');
         }
+
         return $this;
     }
 
