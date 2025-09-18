@@ -310,7 +310,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
             KeyValueField::create(
                 'CustomQueryArgs',
                 _t(
-                    self::class . 'CUSTOM_QUERY_ARGS',
+                    self::class . '.CUSTOM_QUERY_ARGS',
                     'Custom URL Parameters'
                 )
             )
