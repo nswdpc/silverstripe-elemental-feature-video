@@ -10,8 +10,6 @@ use NSWDPC\Elemental\Models\FeaturedVideo\ElementFeaturedVideo;
 use SilverStripe\Control\Director;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\ORM\ValidationException;
-use Symbiote\MultiValueField\Fields\KeyValueField;
-use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 
 /**
  * Provide tests for element featured video

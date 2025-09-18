@@ -107,7 +107,7 @@ trait VideoFromProvider
         $result = $this->dbObject('CustomQueryArgs');
         if ($result instanceof KeyValueField) {
             return $result->getValue() ?? [];
-        }  else {
+        } else {
             return [];
         }
     }
