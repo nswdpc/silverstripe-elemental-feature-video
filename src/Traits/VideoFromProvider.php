@@ -5,7 +5,6 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 use Embed\Embed;
 use Embed\Extractor;
 use SilverStripe\View\Requirements;
-
 use Symbiote\MultiValueField;
 
 /**
