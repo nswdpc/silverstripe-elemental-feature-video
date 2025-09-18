@@ -79,6 +79,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 
     private static int $default_thumb_height = 0;
 
+    private static bool $inline_editable = false;
+
     /**
      * Default height of video, if none specified
      * @var int
