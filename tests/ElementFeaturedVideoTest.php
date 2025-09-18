@@ -245,7 +245,6 @@ class ElementFeaturedVideoTest extends SapphireTest
         $url = $video->EmbedURL();
         $url_parsed = parse_url($url);
         parse_str($url_parsed['query'], $query);
-        error_log("Parameters: " . print_r($query, true));
 
         $this->assertArrayHasKey('h', $query);
         $this->assertArrayHasKey('t', $query);

@@ -5,8 +5,7 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 use Embed\Embed;
 use Embed\Extractor;
 use SilverStripe\View\Requirements;
-use Symbiote\MultiValueField;
-use Symbiote\MultiValueField\Fields\KeyValueField;
+use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 
 /**
  * Common methods for sourcing a video from a provider
@@ -98,14 +97,8 @@ trait VideoFromProvider
      */
     private function getQueries(): array
     {
-        /*if (!isset($this->CustomQueryArgs)) {
-            return [];
-        } else {
-            return $this->CustomQueryArgs->getValues() ?? [];
-        }*/
-
         $result = $this->dbObject('CustomQueryArgs');
-        if ($result instanceof KeyValueField) {
+        if ($result instanceof MultiValueField) {
             return $result->getValue() ?? [];
         } else {
             return [];

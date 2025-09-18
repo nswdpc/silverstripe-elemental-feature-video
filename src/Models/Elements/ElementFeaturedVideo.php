@@ -266,7 +266,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
             KeyValueField::create(
                 'CustomQueryArgs',
                 _t(
-                    self::class . 'CUSTOM_QUERY_ARGS',
+                    self::class . '.CUSTOM_QUERY_ARGS',
                     'Custom URL Parameters'
                 )
             )
