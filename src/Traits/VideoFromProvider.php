@@ -6,6 +6,8 @@ use Embed\Embed;
 use Embed\Extractor;
 use SilverStripe\View\Requirements;
 
+use Symbiote\MultiValueField;
+
 /**
  * Common methods for sourcing a video from a provider
  * @author James
@@ -79,32 +81,6 @@ trait VideoFromProvider
         return $this->Video;
     }
 
-    /*
-     * Methods for decoding and encoding the array of custom query args into json
-     */
-    public function getCustomQueryArgs(): array
-    {
-        $raw = $this->getField('CustomQueryArgs');
-        if (!isset($raw)) {
-            return [];
-        }
-
-        $decoded = json_decode($raw, true);
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    public function setCustomQueryArgs(array $value): self
-    {
-        if (is_array($value)) {
-            $this->setField('CustomQueryArgs', json_encode($value));
-        } elseif (!isset($value)) {
-            // Do nothing
-        } else {
-            error_log('setCustomQueryArgs invalid value');
-        }
-
-        return $this;
-    }
 
     /**
      * Add an requirements used by the video provider to support video embedding
@@ -117,6 +93,18 @@ trait VideoFromProvider
         }
     }
 
+    /*
+     * Get custom query arguments from the MultiValueField
+     */
+    private function getQueries(): array
+    {
+        if (!isset($this->CustomQueryArgs)) {
+            return [];
+        } else {
+            return $this->CustomQueryArgs->getValues() ?? [];
+        }
+    }
+
     /**
      * Return the URL to embed the video in an <iframe>
      */
@@ -124,7 +112,7 @@ trait VideoFromProvider
     {
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            return $provider->getEmbedURL($this->getVideoid(), $this->getCustomQueryArgs(), $this->getVideoHeight());
+            return $provider->getEmbedURL($this->getVideoid(), $this->getQueries(), $this->getVideoHeight());
         } else {
             return "";
         }
@@ -137,7 +125,7 @@ trait VideoFromProvider
     {
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            return $provider->getWatchURL($this->getVideoid(), $this->getCustomQueryArgs());
+            return $provider->getWatchURL($this->getVideoid(), $this->getQueries());
         } else {
             return "";
         }

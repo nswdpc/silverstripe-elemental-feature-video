@@ -80,7 +80,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
         'Transcript' => 'HTMLText',
         'VideoThumbnail' => 'Varchar(255)',
         'UseVideoThumbnail' => 'Boolean',
-        'CustomQueryArgs' => 'Text'
+        'CustomQueryArgs' => 'MultiValueField',
     ];
 
     private static array $has_one = [

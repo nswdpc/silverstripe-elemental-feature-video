@@ -58,7 +58,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         'Width' => 'Int',
         'Height' => 'Int',
         'Transcript' => 'HTMLText',
-        'CustomQueryArgs' => 'Text',
+        'CustomQueryArgs' => 'MultiValueField',
     ];
 
     private static array $has_one = [
