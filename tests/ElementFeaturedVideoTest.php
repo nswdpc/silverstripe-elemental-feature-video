@@ -10,6 +10,8 @@ use NSWDPC\Elemental\Models\FeaturedVideo\ElementFeaturedVideo;
 use SilverStripe\Control\Director;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\ORM\ValidationException;
+use Symbiote\MultiValueField\Fields\KeyValueField;
+use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 
 /**
  * Provide tests for element featured video
@@ -236,12 +238,16 @@ class ElementFeaturedVideoTest extends SapphireTest
         $video->Title = "Vimeo Test";
         $video->Description = "Vimeo Description";
         $video->Transcript = "<p>Vimeo Transcript</p>";
-        $video->CustomQueryArgs = [ "h" => "1", "t" => "10min" ];
+        $video->CustomQueryArgs = [
+            "h" => "1",
+            "t" => "10min"
+        ];
         $video->write();
 
         $url = $video->EmbedURL();
         $url_parsed = parse_url($url);
         parse_str($url_parsed['query'], $query);
+        error_log("Parameters: " . print_r($query, true));
 
         $this->assertArrayHasKey('h', $query);
         $this->assertArrayHasKey('t', $query);
