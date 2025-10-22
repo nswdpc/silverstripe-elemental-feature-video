@@ -41,7 +41,8 @@
         "silverstripe/assets" : "^2",
         "silverstripe/asset-admin" : "^2",
         "silverstripe/versioned": "^2",
-        "nswdpc/silverstripe-inline-linker": "^1"
+        "nswdpc/silverstripe-inline-linker": "^1",
+        "symbiote/silverstripe-multivaluefield": "^6"
     },
     "require-dev": {
         "cambis/silverstan": "^2",

@@ -131,7 +131,7 @@ class ElementVideoGallery extends ElementContent
     }
 
 
-    public function SortedVideos()
+    public function SortedVideos(): \SilverStripe\ORM\DataList
     {
         return $this->Videos()->Sort('Sort');
     }

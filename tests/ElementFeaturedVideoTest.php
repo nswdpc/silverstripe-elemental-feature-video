@@ -228,4 +228,28 @@ class ElementFeaturedVideoTest extends SapphireTest
 
     }
 
+    public function testEmbedURL(): void
+    {
+        $video = ElementFeaturedVideo::create();
+        $video->Provider = Vimeo::getProviderCode();
+        $video->Video = "testvimeo";
+        $video->Title = "Vimeo Test";
+        $video->Description = "Vimeo Description";
+        $video->Transcript = "<p>Vimeo Transcript</p>";
+        $video->CustomQueryArgs = [
+            "h" => "1",
+            "t" => "10min"
+        ];
+        $video->write();
+
+        $url = $video->EmbedURL();
+        $url_parsed = parse_url($url);
+        parse_str($url_parsed['query'], $query);
+
+        $this->assertArrayHasKey('h', $query);
+        $this->assertArrayHasKey('t', $query);
+
+        $this->assertEquals('1', $query['h']);
+        $this->assertEquals('10min', $query['t']);
+    }
 }

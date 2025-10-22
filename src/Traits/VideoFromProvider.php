@@ -5,6 +5,7 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 use Embed\Embed;
 use Embed\Extractor;
 use SilverStripe\View\Requirements;
+use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 
 /**
  * Common methods for sourcing a video from a provider
@@ -79,6 +80,7 @@ trait VideoFromProvider
         return $this->Video;
     }
 
+
     /**
      * Add an requirements used by the video provider to support video embedding
      */
@@ -90,6 +92,19 @@ trait VideoFromProvider
         }
     }
 
+    /*
+     * Get custom query arguments from the MultiValueField
+     */
+    private function getQueries(): array
+    {
+        $result = $this->dbObject('CustomQueryArgs');
+        if ($result instanceof MultiValueField) {
+            return $result->getValue() ?? [];
+        } else {
+            return [];
+        }
+    }
+
     /**
      * Return the URL to embed the video in an <iframe>
      */
@@ -97,7 +112,7 @@ trait VideoFromProvider
     {
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            return $provider->getEmbedURL($this->getVideoid(), [], $this->getVideoHeight());
+            return $provider->getEmbedURL($this->getVideoid(), $this->getQueries(), $this->getVideoHeight());
         } else {
             return "";
         }
@@ -110,7 +125,7 @@ trait VideoFromProvider
     {
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
-            return $provider->getWatchURL($this->getVideoid(), []);
+            return $provider->getWatchURL($this->getVideoid(), $this->getQueries());
         } else {
             return "";
         }

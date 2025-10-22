@@ -13,6 +13,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use Symbiote\MultiValueField\Fields\KeyValueField;
 use gorriecoe\Link\Models\Link;
 use NSWDPC\InlineLinker\InlineLinkCompositeField;
 
@@ -33,6 +34,7 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
  * @method \NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery Parent()
  * @method \gorriecoe\Link\Models\Link LinkTarget()
  * @mixin \SilverStripe\Versioned\Versioned
+ * @property mixed $CustomQueryArgs
  */
 class GalleryVideo extends DataObject implements VideoDefaults
 {
@@ -77,7 +79,8 @@ class GalleryVideo extends DataObject implements VideoDefaults
         'Sort' => 'Int',
         'Transcript' => 'HTMLText',
         'VideoThumbnail' => 'Varchar(255)',
-        'UseVideoThumbnail' => 'Boolean'
+        'UseVideoThumbnail' => 'Boolean',
+        'CustomQueryArgs' => 'MultiValueField',
     ];
 
     private static array $has_one = [
@@ -299,6 +302,17 @@ class GalleryVideo extends DataObject implements VideoDefaults
                     0 => _t(self::class . 'IMAGE_UPLOADED', 'Image uploaded'),
                     1 => _t(self::class . 'VIDEO_THUMBNAIL_FOUND', 'Video thumbnail found')
                 ]
+            )
+        );
+
+        $fields->insertAfter(
+            'VideoID',
+            KeyValueField::create(
+                'CustomQueryArgs',
+                _t(
+                    self::class . '.CUSTOM_QUERY_ARGS',
+                    'Custom URL Parameters'
+                )
             )
         );
 
