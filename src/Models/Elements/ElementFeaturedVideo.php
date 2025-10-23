@@ -281,7 +281,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
      * @inheritdoc
      */
     #[\Override]
-    public function forTemplate($holder = true)
+    public function forTemplate($holder = true): string
     {
         $this->addEmbedRequirements();
         return parent::forTemplate($holder);
