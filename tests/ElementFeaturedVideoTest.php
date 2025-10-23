@@ -9,7 +9,6 @@ use NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider;
 use NSWDPC\Elemental\Models\FeaturedVideo\ElementFeaturedVideo;
 use SilverStripe\Control\Director;
 use SilverStripe\Dev\SapphireTest;
-use SilverStripe\ORM\ValidationException;
 
 /**
  * Provide tests for element featured video
@@ -62,7 +61,7 @@ class ElementFeaturedVideoTest extends SapphireTest
             $video->Transcript = "<p>YouTube Transcript</p>";
             $video->write();
             $this->assertFalse($video->IsInDB());
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             $this->assertNotEmpty($validationException->getMessage());
         }
     }

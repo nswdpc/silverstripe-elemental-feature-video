@@ -37,7 +37,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 
     private static string $title = 'Feature video';
 
-    private static string $description = "Display a feature video";
+    private static string $class_description = "Display a feature video";
 
     private static string $singular_name = 'FeaturedVideo';
 
@@ -281,7 +281,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
      * @inheritdoc
      */
     #[\Override]
-    public function forTemplate($holder = true)
+    public function forTemplate($holder = true): string
     {
         $this->addEmbedRequirements();
         return parent::forTemplate($holder);

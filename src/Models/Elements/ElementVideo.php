@@ -31,7 +31,7 @@ class ElementVideo extends BaseElement
 
     private static string $title = 'Video via embed URL';
 
-    private static string $description = "Display a video using an embed URL";
+    private static string $class_description = "Display a video using an embed URL";
 
     private static array $db = [
         'Caption' => 'Text',
