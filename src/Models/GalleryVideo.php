@@ -339,6 +339,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     /**
      * Render this record into a template
      */
+    #[\Override]
     public function forTemplate(): string
     {
         $this->addEmbedRequirements();

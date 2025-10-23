@@ -25,7 +25,7 @@ class ElementVideoGallery extends ElementContent
 
     private static string $title = 'Video gallery';
 
-    private static string $description = "Display one or more videos";
+    private static string $class_description = "Display one or more videos";
 
     private static string $singular_name = 'Video gallery';
 

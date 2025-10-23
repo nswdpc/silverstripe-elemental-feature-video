@@ -37,7 +37,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 
     private static string $title = 'Feature video';
 
-    private static string $description = "Display a feature video";
+    private static string $class_description = "Display a feature video";
 
     private static string $singular_name = 'FeaturedVideo';
 

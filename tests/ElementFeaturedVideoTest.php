@@ -62,7 +62,7 @@ class ElementFeaturedVideoTest extends SapphireTest
             $video->Transcript = "<p>YouTube Transcript</p>";
             $video->write();
             $this->assertFalse($video->IsInDB());
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             $this->assertNotEmpty($validationException->getMessage());
         }
     }
