@@ -10,6 +10,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
+use Symbiote\MultiValueField\Fields\KeyValueField;
 use gorriecoe\Link\Models\Link;
 use NSWDPC\InlineLinker\InlineLinkCompositeField;
 
@@ -24,6 +25,7 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
  * @property int $FeatureLinkID
  * @method \SilverStripe\Assets\Image Image()
  * @method \gorriecoe\Link\Models\Link FeatureLink()
+ * @property mixed $CustomQueryArgs
  */
 class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 {
@@ -55,7 +57,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
         'Provider' => 'Varchar',
         'Width' => 'Int',
         'Height' => 'Int',
-        'Transcript' => 'HTMLText'
+        'Transcript' => 'HTMLText',
+        'CustomQueryArgs' => 'MultiValueField',
     ];
 
     private static array $has_one = [
@@ -75,6 +78,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     private static int $default_thumb_width = 1200;
 
     private static int $default_thumb_height = 0;
+
+    private static bool $inline_editable = false;
 
     /**
      * Default height of video, if none specified
@@ -253,6 +258,18 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
                 _t(
                     self::class . '.TRANSCRIPT',
                     'Transcript of video'
+                )
+            )
+        );
+
+
+        $fields->insertAfter(
+            'VideoID',
+            KeyValueField::create(
+                'CustomQueryArgs',
+                _t(
+                    self::class . '.CUSTOM_QUERY_ARGS',
+                    'Custom URL Parameters'
                 )
             )
         );
