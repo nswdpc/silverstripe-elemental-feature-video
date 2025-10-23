@@ -9,7 +9,6 @@ use NSWDPC\Elemental\Models\FeaturedVideo\YouTubeNoCookie;
 use NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider;
 use SilverStripe\Control\Director;
 use SilverStripe\Dev\SapphireTest;
-use SilverStripe\ORM\ValidationException;
 
 /**
  * Provide tests for a single gallery video

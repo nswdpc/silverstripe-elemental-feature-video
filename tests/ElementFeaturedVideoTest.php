@@ -9,7 +9,6 @@ use NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider;
 use NSWDPC\Elemental\Models\FeaturedVideo\ElementFeaturedVideo;
 use SilverStripe\Control\Director;
 use SilverStripe\Dev\SapphireTest;
-use SilverStripe\ORM\ValidationException;
 
 /**
  * Provide tests for element featured video
