@@ -65,7 +65,7 @@ trait VideoFromProvider
     public function validateVideoCode($videoCode)
     {
         if (preg_match("/^http(s)?:\/\//", (string) $videoCode)) {
-            throw \SilverStripe\ORM\ValidationException::create(_t(
+            throw \SilverStripe\Core\Validation\ValidationException::create(_t(
                 self::class . ".VIDEO_ID_NOT_URL",
                 "Please use the video id from the embed URL, not the URL itself"
             ));
