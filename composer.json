@@ -37,7 +37,7 @@
         "symbiote/silverstripe-gridfieldextensions" : "^5",
         "dnadesign/silverstripe-elemental": "^6",
         "nswdpc/silverstripe-linkfield" : "^2",
-        "nswdpc/silverstripe-embed" : "dev-ss6",
+        "nswdpc/silverstripe-embed" : "^3",
         "silverstripe/assets" : "^3",
         "silverstripe/asset-admin" : "^3",
         "silverstripe/versioned": "^3",
