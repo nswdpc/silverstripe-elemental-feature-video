@@ -269,7 +269,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
                 'CustomQueryArgs',
                 _t(
                     self::class . '.CUSTOM_QUERY_ARGS',
-                    'Custom URL Parameters'
+                    'Custom parameters for the video URL'
                 )
             )
         );
