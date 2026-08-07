@@ -4,6 +4,8 @@ namespace NSWDPC\Elemental\Models\FeaturedVideo;
 
 use Embed\Embed;
 use Embed\Extractor;
+use Embed\Http\Crawler;
+use Embed\Http\CurlClient;
 use SilverStripe\View\Requirements;
 use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 
@@ -140,6 +142,35 @@ trait VideoFromProvider
     }
 
     /**
+     * Return the Embed instance to use
+     */
+    public function getEmbedInstance(): Embed
+    {
+        return new Embed($this->getEmbedCrawler());
+    }
+
+    /**
+     * Return the Embed Crawler instance to use
+     */
+    public function getEmbedCrawler(): ?Crawler
+    {
+        $client = new CurlClient();
+        $client->setSettings($this->getEmbedCurlSettings());
+        return new Crawler($client);
+    }
+
+    /**
+     * Provide default cURL settings for Embed
+     */
+    public function getEmbedCurlSettings(): array
+    {
+        return [
+            'ssl_verify_host' => 2,
+            'ssl_verify_peer' => true
+        ];
+    }
+
+    /**
      * Return OEmbed data from embed/embed
      * @param bool $force true = force request to be made
      * @return mixed
@@ -149,7 +180,7 @@ trait VideoFromProvider
         try {
             if (is_null($this->oEmbedData) || $force) {
                 $watchURL = $this->WatchURL();
-                $embed = new Embed();
+                $embed = $this->getEmbedInstance();
                 $this->oEmbedData = $embed->get($watchURL);
             }
         } catch (\Exception) {

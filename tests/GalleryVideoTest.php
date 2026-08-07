@@ -2,6 +2,7 @@
 
 namespace NSWDPC\Elemental\Models\FeaturedVideo\Tests;
 
+use Embed\Embed;
 use NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo;
 use NSWDPC\Elemental\Models\FeaturedVideo\YouTube;
 use NSWDPC\Elemental\Models\FeaturedVideo\Vimeo;
@@ -208,6 +209,29 @@ class GalleryVideoTest extends SapphireTest
 
         // validate the video has a thumbnail as a URL
         $this->assertNotFalse(filter_var($video->VideoThumbnail, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED));
+
+    }
+
+    public function testEmbedInstance(): void
+    {
+
+        $videoId = "700166879";
+
+        $video = GalleryVideo::create();
+        $video->Provider = GalleryVideo::PROVIDER_VIMEO;
+        $video->Video = $videoId;
+        $video->Title = "Vimeo Test";
+        $video->Description = "Vimeo Description";
+        $video->Transcript = "<p>Vimeo Transcript</p>";
+
+        $embed = $video->getEmbedInstance();
+        $this->assertInstanceof(Embed::class, $embed);
+
+        $settings = $video->getEmbedCurlSettings();
+        $this->assertArrayHasKey('ssl_verify_host', $settings);
+        $this->assertArrayHasKey('ssl_verify_peer', $settings);
+        $this->assertEquals(2, $settings['ssl_verify_host']);
+        $this->assertEquals(true, $settings['ssl_verify_peer']);
 
     }
 }
