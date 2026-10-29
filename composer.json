@@ -36,12 +36,11 @@
         "embed/embed": "^4.4",
         "symbiote/silverstripe-gridfieldextensions" : "^5",
         "dnadesign/silverstripe-elemental": "^6",
-        "nswdpc/silverstripe-linkfield" : "^2",
+        "nswdpc/silverstripe-linkfield" : "dev-feat-link-migrator-staged as 2.1.0",
         "nswdpc/silverstripe-embed" : "^3",
         "silverstripe/assets" : "^3",
         "silverstripe/asset-admin" : "^3",
         "silverstripe/versioned": "^3",
-        "nswdpc/silverstripe-inline-linker": "^2",
         "symbiote/silverstripe-multivaluefield": "^7"
     },
     "require-dev": {

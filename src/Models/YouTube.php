@@ -52,9 +52,8 @@ class YouTube extends VideoProvider
     {
         if ($videoId) {
             return "/embed/{$videoId}/";
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
@@ -81,15 +80,14 @@ class YouTube extends VideoProvider
     {
         if (!self::config()->get('enable_iframe_api')) {
             return false;
-        } else {
-            Requirements::javascript(
-                "https://www.youtube.com/iframe_api",
-                [
-                    "async" => true,
-                ]
-            );
-            return true;
         }
+        Requirements::javascript(
+            "https://www.youtube.com/iframe_api",
+            [
+                "async" => true,
+            ]
+        );
+        return true;
     }
 
     /**

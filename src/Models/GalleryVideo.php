@@ -15,7 +15,9 @@ use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use Symbiote\MultiValueField\Fields\KeyValueField;
 use gorriecoe\Link\Models\Link;
-use NSWDPC\InlineLinker\InlineLinkCompositeField;
+use gorriecoe\LinkField\LinkField;
+use SilverStripe\LinkField\Models\Link as CoreLink;
+use SilverStripe\LinkField\Form\LinkField as CoreLinkField;
 
 /**
  * Images in an ElementVideo
@@ -33,6 +35,8 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
  * @method \SilverStripe\Assets\Image Image()
  * @method \NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery Parent()
  * @method \gorriecoe\Link\Models\Link LinkTarget()
+ * @method \SilverStripe\LinkField\Models\Link CoreLinkTarget()
+ * @property int $CoreLinkTargetID
  * @mixin \SilverStripe\Versioned\Versioned
  * @property mixed $CustomQueryArgs
  */
@@ -86,7 +90,8 @@ class GalleryVideo extends DataObject implements VideoDefaults
     private static array $has_one = [
         'Image' => Image::class,
         'Parent' => ElementVideoGallery::class,
-        'LinkTarget' => Link::class
+        'LinkTarget' => Link::class,
+        'CoreLinkTarget' => CoreLink::class
     ];
 
     private static array $summary_fields = [
@@ -105,7 +110,16 @@ class GalleryVideo extends DataObject implements VideoDefaults
     ];
 
     private static array $owns = [
-        'Image'
+        'Image',
+        'CoreLinkTarget'
+    ];
+
+    private static array $cascade_deletes = [
+        'CoreLinkTarget'
+    ];
+
+    private static array $cascade_duplicates = [
+        'CoreLinkTarget'
     ];
 
     private static array $extensions = [
@@ -138,7 +152,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     {
         $folder_name = $this->config()->get('folder_name');
         if (!$folder_name) {
-            $folder_name = "videos";
+            return "videos";
         }
 
         return $folder_name;
@@ -165,7 +179,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     {
         $fields = parent::getCMSFields();
 
-        $fields->removeByName(['ParentID', 'LinkTargetID', 'Sort']);
+        $fields->removeByName(['ParentID', 'LinkTargetID', 'CoreLinkTarget', 'Sort']);
 
         if (Controller::curr() instanceof VideoAdmin) {
             $fields->addFieldToTab(
@@ -254,14 +268,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
                         'Transcript of video'
                     )
                 ),
-                InlineLinkCompositeField::create(
-                    'LinkTarget',
-                    _t(
-                        self::class . 'LINKTARGET',
-                        'Link'
-                    ),
-                    $this
-                )
+                $this->getLinkField()
             ]
         );
 
@@ -353,5 +360,42 @@ class GalleryVideo extends DataObject implements VideoDefaults
     {
         $value = $this->config()->get('allow_attribute');
         return is_string($value) ? $value : '';
+    }
+
+    /**
+     * Return the field used to render the link
+     * based on migration state
+     */
+    protected function getLinkField(): CoreLinkField|LinkField
+    {
+        $link = $this->getDerivedLinkTarget();
+        if ($link instanceof CoreLink) {
+            return CoreLinkField::create('CoreLinkTarget', _t(self::class . '.LINKTARGET', 'Link'));
+        }
+
+        return LinkField::create('LinkTarget', _t(self::class . '.LINKTARGET', 'Link'), $this);
+    }
+
+    /**
+     * Template method
+     */
+    public function DerivedLinkTarget(): CoreLink|Link
+    {
+        return $this->getDerivedLinkTarget();
+    }
+
+    /**
+     * Returns the relevant link based on migration status
+     */
+    public function getDerivedLinkTarget(): CoreLink|Link
+    {
+        $coreLink = $this->CoreLinkTarget();
+        /** @var Link $legacyLink */
+        $legacyLink = $this->getComponent('LinkTarget');
+        if ($coreLink->isInDB() || !$legacyLink->isInDB()) {
+            return $coreLink;
+        }
+
+        return $legacyLink;
     }
 }

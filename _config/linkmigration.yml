@@ -1,0 +1,11 @@
+---
+Name: nswdpc-elemental-feature-video-linkmigration
+Only:
+  classexists: 'gorriecoe\LinkField\Migration\LinkMigrator'
+---
+gorriecoe\LinkField\Migration\LinkMigrator:
+  relation_map:
+    NSWDPC\Elemental\Models\FeaturedVideo\ElementFeaturedVideo:
+      FeatureLink: CoreFeatureLink
+    NSWDPC\Elemental\Models\FeaturedVideo\GalleryVideo:
+      LinkTarget: CoreLinkTarget

@@ -12,7 +12,9 @@ use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use Symbiote\MultiValueField\Fields\KeyValueField;
 use gorriecoe\Link\Models\Link;
-use NSWDPC\InlineLinker\InlineLinkCompositeField;
+use gorriecoe\LinkField\LinkField;
+use SilverStripe\LinkField\Models\Link as CoreLink;
+use SilverStripe\LinkField\Form\LinkField as CoreLinkField;
 
 /**
  * ElementFeaturedVideo adds a featured video
@@ -25,6 +27,8 @@ use NSWDPC\InlineLinker\InlineLinkCompositeField;
  * @property int $FeatureLinkID
  * @method \SilverStripe\Assets\Image Image()
  * @method \gorriecoe\Link\Models\Link FeatureLink()
+ * @method \SilverStripe\LinkField\Models\Link CoreFeatureLink()
+ * @property int $CoreFeatureLinkID
  * @property mixed $CustomQueryArgs
  */
 class ElementFeaturedVideo extends ElementContent implements VideoDefaults
@@ -63,7 +67,8 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 
     private static array $has_one = [
         'Image' => Image::class,
-        'FeatureLink' => Link::class // an optional link for more information
+        'FeatureLink' => Link::class,
+        'CoreFeatureLink' => CoreLink::class
     ];
 
     private static array $summary_fields = [
@@ -72,7 +77,16 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     ];
 
     private static array $owns = [
-        'Image'
+        'Image',
+        'CoreFeatureLink'
+    ];
+
+    private static array $cascade_deletes = [
+        'CoreFeatureLink'
+    ];
+
+    private static array $cascade_duplicates = [
+        'CoreFeatureLink'
     ];
 
     private static int $default_thumb_width = 1200;
@@ -94,7 +108,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     {
         $width = $this->Width;
         if ($width <= 0) {
-            $width = $this->config()->get('default_thumb_width');
+            return $this->config()->get('default_thumb_width');
         }
 
         return $width;
@@ -107,7 +121,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     {
         $height = $this->Height;
         if ($height <= 0) {
-            $height = $this->config()->get('default_thumb_height');
+            return $this->config()->get('default_thumb_height');
         }
 
         return $height;
@@ -132,11 +146,11 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
             $height = $this->getThumbHeight();
             if ($width > 0 && $height > 0) {
                 return $image->FillMax($width, $height);
-            } elseif ($width > 0) {
-                return $image->ScaleWidth($width);
-            } else {
-                return $image;
             }
+            if ($width > 0) {
+                return $image->ScaleWidth($width);
+            }
+            return $image;
         }
 
         return null;
@@ -182,7 +196,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->removeByName(['FeatureLink','FeatureLinkID']);
+        $fields->removeByName(['FeatureLink','FeatureLinkID','CoreFeatureLink']);
         $fields->addFieldsToTab(
             'Root.Main',
             [
@@ -198,14 +212,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
                         'Video ID'
                     )
                 ),
-                InlineLinkCompositeField::create(
-                    'FeatureLink',
-                    _t(
-                        self::class . 'LINK',
-                        'Link'
-                    ),
-                    $this->owner
-                ),
+                $this->getLinkField(),
                 UploadField::create(
                     'Image',
                     _t(
@@ -285,6 +292,43 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     {
         $this->addEmbedRequirements();
         return parent::forTemplate($holder);
+    }
+
+    /**
+     * Return the field used to render the link
+     * based on migration state
+     */
+    protected function getLinkField(): CoreLinkField|LinkField
+    {
+        $link = $this->getDerivedFeatureLink();
+        if ($link instanceof CoreLink) {
+            return CoreLinkField::create('CoreFeatureLink', _t(self::class . '.LINK', 'Link'));
+        }
+
+        return LinkField::create('FeatureLink', _t(self::class . '.LINK', 'Link'), $this);
+    }
+
+    /**
+     * Template method
+     */
+    public function DerivedFeatureLink(): CoreLink|Link
+    {
+        return $this->getDerivedFeatureLink();
+    }
+
+    /**
+     * Returns the relevant link based on migration status
+     */
+    public function getDerivedFeatureLink(): CoreLink|Link
+    {
+        $coreLink = $this->CoreFeatureLink();
+        /** @var Link $legacyLink */
+        $legacyLink = $this->getComponent('FeatureLink');
+        if ($coreLink->isInDB() || !$legacyLink->isInDB()) {
+            return $coreLink;
+        }
+
+        return $legacyLink;
     }
 
 }
