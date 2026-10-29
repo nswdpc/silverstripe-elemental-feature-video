@@ -108,7 +108,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     {
         $width = $this->Width;
         if ($width <= 0) {
-            $width = $this->config()->get('default_thumb_width');
+            return $this->config()->get('default_thumb_width');
         }
 
         return $width;
@@ -121,7 +121,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     {
         $height = $this->Height;
         if ($height <= 0) {
-            $height = $this->config()->get('default_thumb_height');
+            return $this->config()->get('default_thumb_height');
         }
 
         return $height;
@@ -146,11 +146,11 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
             $height = $this->getThumbHeight();
             if ($width > 0 && $height > 0) {
                 return $image->FillMax($width, $height);
-            } elseif ($width > 0) {
-                return $image->ScaleWidth($width);
-            } else {
-                return $image;
             }
+            if ($width > 0) {
+                return $image->ScaleWidth($width);
+            }
+            return $image;
         }
 
         return null;

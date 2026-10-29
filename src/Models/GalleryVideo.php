@@ -152,7 +152,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     {
         $folder_name = $this->config()->get('folder_name');
         if (!$folder_name) {
-            $folder_name = "videos";
+            return "videos";
         }
 
         return $folder_name;

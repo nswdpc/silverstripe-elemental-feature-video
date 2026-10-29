@@ -54,11 +54,11 @@ trait VideoFromProvider
         $parent = $this->Parent();
         if ($parent && $parent->VideoHeight > 0) {
             return $parent->VideoHeight;
-        } elseif ($this->videoHeight > 0) {
-            return $this->videoHeight;
-        } else {
-            return $this->getDefaultVideoHeight();
         }
+        if ($this->videoHeight > 0) {
+            return $this->videoHeight;
+        }
+        return $this->getDefaultVideoHeight();
     }
 
     /**
@@ -102,9 +102,8 @@ trait VideoFromProvider
         $result = $this->dbObject('CustomQueryArgs');
         if ($result instanceof MultiValueField) {
             return $result->getValue() ?? [];
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**
@@ -115,9 +114,8 @@ trait VideoFromProvider
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getEmbedURL($this->getVideoid(), $this->getQueries(), $this->getVideoHeight());
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
@@ -128,9 +126,8 @@ trait VideoFromProvider
         $provider = VideoProvider::getProvider($this->Provider);
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getWatchURL($this->getVideoid(), $this->getQueries());
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
@@ -218,9 +215,8 @@ trait VideoFromProvider
         $inst = VideoProvider::getProvider($this->Provider);
         if ($inst instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $inst->getVideoProviderCode();
-        } else {
-            return null;
         }
+        return null;
     }
 
 }
