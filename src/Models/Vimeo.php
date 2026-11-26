@@ -42,9 +42,9 @@ class Vimeo extends VideoProvider
     {
         if ($videoId) {
             return "/video/{$videoId}/";
-        } else {
-            return "";
         }
+
+        return "";
     }
 
     /**

@@ -20,13 +20,19 @@
 
         <% end_if %>
 
-            <% if $HTML || $FeatureLink %>
+            <% if $HTML || $DerivedFeatureLink %>
             <figcaption>
                 <% if $HTML %>
                 {$HTML}
                 <% end_if %>
-                <% if $FeatureLink %>
-                    <p><a href="{$FeatureLink.LinkURL}">{$FeatureLink.Title}</a></p>
+                <% if $DerivedFeatureLink %>
+                    <% with DerivedFeatureLink %>
+                    <p>
+                        <a href="{$LinkURL}" rel="noopener noreferrer"><% if $OpenInNewWindow %> target="_blank"<% end_if %>>
+                            {$Title}
+                        </a>
+                    </p>
+                    <% end_with %>
                 <% end_if %>
             </figcaption>
             <% end_if %>

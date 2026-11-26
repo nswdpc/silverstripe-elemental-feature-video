@@ -18,11 +18,17 @@
     <% end_if %>
     </div>
 
-    <% if $Description || $LinkTarget %>
+    <% if $Description || $DerivedLinkTarget %>
     <figcaption>
         <% if $Description %><p>{$Description.XML}</p><% end_if %>
-        <% if $LinkTarget %>
-            <p><a href="{$LinkTarget.LinkURL}">{$LinkTarget.Title}</a></p>
+        <% if $DerivedLinkTarget %>
+            <% with $DerivedLinkTarget %>
+            <p>
+                <a href="{$LinkURL}" rel="noopener noreferrer"<% if $OpenInNewWindow %> target="_blank"<% end_if %>>
+                    {$Title}
+                </a>
+            </p>
+            <% end_with %>
         <% end_if %>
     </figcaption>
     <% end_if %>
