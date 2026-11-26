@@ -55,9 +55,11 @@ trait VideoFromProvider
         if ($parent && $parent->VideoHeight > 0) {
             return $parent->VideoHeight;
         }
+
         if ($this->videoHeight > 0) {
             return $this->videoHeight;
         }
+
         return $this->getDefaultVideoHeight();
     }
 
@@ -103,6 +105,7 @@ trait VideoFromProvider
         if ($result instanceof MultiValueField) {
             return $result->getValue() ?? [];
         }
+
         return [];
     }
 
@@ -115,6 +118,7 @@ trait VideoFromProvider
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getEmbedURL($this->getVideoid(), $this->getQueries(), $this->getVideoHeight());
         }
+
         return "";
     }
 
@@ -127,6 +131,7 @@ trait VideoFromProvider
         if ($provider instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $provider->getWatchURL($this->getVideoid(), $this->getQueries());
         }
+
         return "";
     }
 
@@ -216,6 +221,7 @@ trait VideoFromProvider
         if ($inst instanceof \NSWDPC\Elemental\Models\FeaturedVideo\VideoProvider) {
             return $inst->getVideoProviderCode();
         }
+
         return null;
     }
 

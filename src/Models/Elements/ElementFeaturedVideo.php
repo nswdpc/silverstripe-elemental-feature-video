@@ -147,9 +147,11 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
             if ($width > 0 && $height > 0) {
                 return $image->FillMax($width, $height);
             }
+
             if ($width > 0) {
                 return $image->ScaleWidth($width);
             }
+
             return $image;
         }
 

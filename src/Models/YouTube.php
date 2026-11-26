@@ -53,6 +53,7 @@ class YouTube extends VideoProvider
         if ($videoId) {
             return "/embed/{$videoId}/";
         }
+
         return "";
     }
 
@@ -81,6 +82,7 @@ class YouTube extends VideoProvider
         if (!self::config()->get('enable_iframe_api')) {
             return false;
         }
+
         Requirements::javascript(
             "https://www.youtube.com/iframe_api",
             [
