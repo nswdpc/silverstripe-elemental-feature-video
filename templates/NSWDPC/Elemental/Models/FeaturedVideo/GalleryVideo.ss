@@ -24,7 +24,7 @@
         <% if $DerivedLinkTarget %>
             <% with $DerivedLinkTarget %>
             <p>
-                <a href="{$LinkURL}" rel="noopener noreferrer"<% if $OpenInNewWindow %> target="_blank"<% end_if %>>
+                <a href="{$URL}" rel="noopener noreferrer"<% if $OpenInNew %> target="_blank"<% end_if %>>
                     {$Title}
                 </a>
             </p>

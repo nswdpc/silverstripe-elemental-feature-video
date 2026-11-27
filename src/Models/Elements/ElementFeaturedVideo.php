@@ -11,8 +11,6 @@ use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use Symbiote\MultiValueField\Fields\KeyValueField;
-use gorriecoe\Link\Models\Link;
-use gorriecoe\LinkField\LinkField;
 use SilverStripe\LinkField\Models\Link as CoreLink;
 use SilverStripe\LinkField\Form\LinkField as CoreLinkField;
 
@@ -24,9 +22,7 @@ use SilverStripe\LinkField\Form\LinkField as CoreLinkField;
  * @property int $Height
  * @property ?string $Transcript
  * @property int $ImageID
- * @property int $FeatureLinkID
  * @method \SilverStripe\Assets\Image Image()
- * @method \gorriecoe\Link\Models\Link FeatureLink()
  * @method \SilverStripe\LinkField\Models\Link CoreFeatureLink()
  * @property int $CoreFeatureLinkID
  * @property mixed $CustomQueryArgs
@@ -67,7 +63,6 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
 
     private static array $has_one = [
         'Image' => Image::class,
-        'FeatureLink' => Link::class,
         'CoreFeatureLink' => CoreLink::class
     ];
 
@@ -198,7 +193,7 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->removeByName(['FeatureLink','FeatureLinkID','CoreFeatureLink']);
+        $fields->removeByName(['CoreFeatureLink']);
         $fields->addFieldsToTab(
             'Root.Main',
             [
@@ -300,20 +295,15 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
      * Return the field used to render the link
      * based on migration state
      */
-    protected function getLinkField(): CoreLinkField|LinkField
+    protected function getLinkField(): CoreLinkField
     {
-        $link = $this->getDerivedFeatureLink();
-        if ($link instanceof CoreLink) {
-            return CoreLinkField::create('CoreFeatureLink', _t(self::class . '.LINK', 'Link'));
-        }
-
-        return LinkField::create('FeatureLink', _t(self::class . '.LINK', 'Link'), $this);
+        return CoreLinkField::create('CoreFeatureLink', _t(self::class . '.LINK', 'Link'));
     }
 
     /**
      * Template method
      */
-    public function DerivedFeatureLink(): CoreLink|Link
+    public function DerivedFeatureLink(): ?CoreLink
     {
         return $this->getDerivedFeatureLink();
     }
@@ -321,16 +311,17 @@ class ElementFeaturedVideo extends ElementContent implements VideoDefaults
     /**
      * Returns the relevant link based on migration status
      */
-    public function getDerivedFeatureLink(): CoreLink|Link
+    public function getDerivedFeatureLink(): ?CoreLink
     {
-        $coreLink = $this->CoreFeatureLink();
-        /** @var Link $legacyLink */
-        $legacyLink = $this->getComponent('FeatureLink');
-        if ($coreLink->isInDB() || !$legacyLink->isInDB()) {
-            return $coreLink;
-        }
+        return $this->CoreFeatureLink();
+    }
 
-        return $legacyLink;
+    /**
+     * BC method
+     */
+    public function getFeatureLink(): ?CoreLink
+    {
+        return $this->getDerivedFeatureLink();
     }
 
 }
