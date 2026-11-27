@@ -14,8 +14,6 @@ use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\OptionsetField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use Symbiote\MultiValueField\Fields\KeyValueField;
-use gorriecoe\Link\Models\Link;
-use gorriecoe\LinkField\LinkField;
 use SilverStripe\LinkField\Models\Link as CoreLink;
 use SilverStripe\LinkField\Form\LinkField as CoreLinkField;
 
@@ -31,10 +29,8 @@ use SilverStripe\LinkField\Form\LinkField as CoreLinkField;
  * @property bool $UseVideoThumbnail
  * @property int $ImageID
  * @property int $ParentID
- * @property int $LinkTargetID
  * @method \SilverStripe\Assets\Image Image()
  * @method \NSWDPC\Elemental\Models\FeaturedVideo\ElementVideoGallery Parent()
- * @method \gorriecoe\Link\Models\Link LinkTarget()
  * @method \SilverStripe\LinkField\Models\Link CoreLinkTarget()
  * @property int $CoreLinkTargetID
  * @mixin \SilverStripe\Versioned\Versioned
@@ -90,7 +86,6 @@ class GalleryVideo extends DataObject implements VideoDefaults
     private static array $has_one = [
         'Image' => Image::class,
         'Parent' => ElementVideoGallery::class,
-        'LinkTarget' => Link::class,
         'CoreLinkTarget' => CoreLink::class
     ];
 
@@ -179,7 +174,7 @@ class GalleryVideo extends DataObject implements VideoDefaults
     {
         $fields = parent::getCMSFields();
 
-        $fields->removeByName(['ParentID', 'LinkTargetID', 'CoreLinkTarget', 'Sort']);
+        $fields->removeByName(['ParentID', 'CoreLinkTarget', 'Sort']);
 
         if (Controller::curr() instanceof VideoAdmin) {
             $fields->addFieldToTab(
@@ -366,20 +361,15 @@ class GalleryVideo extends DataObject implements VideoDefaults
      * Return the field used to render the link
      * based on migration state
      */
-    protected function getLinkField(): CoreLinkField|LinkField
+    protected function getLinkField(): CoreLinkField
     {
-        $link = $this->getDerivedLinkTarget();
-        if ($link instanceof CoreLink) {
-            return CoreLinkField::create('CoreLinkTarget', _t(self::class . '.LINKTARGET', 'Link'));
-        }
-
-        return LinkField::create('LinkTarget', _t(self::class . '.LINKTARGET', 'Link'), $this);
+        return CoreLinkField::create('CoreLinkTarget', _t(self::class . '.LINKTARGET', 'Link'));
     }
 
     /**
      * Template method
      */
-    public function DerivedLinkTarget(): CoreLink|Link
+    public function DerivedLinkTarget(): ?CoreLink
     {
         return $this->getDerivedLinkTarget();
     }
@@ -387,15 +377,13 @@ class GalleryVideo extends DataObject implements VideoDefaults
     /**
      * Returns the relevant link based on migration status
      */
-    public function getDerivedLinkTarget(): CoreLink|Link
+    public function getDerivedLinkTarget(): ?CoreLink
     {
-        $coreLink = $this->CoreLinkTarget();
-        /** @var Link $legacyLink */
-        $legacyLink = $this->getComponent('LinkTarget');
-        if ($coreLink->isInDB() || !$legacyLink->isInDB()) {
-            return $coreLink;
-        }
+        return $this->CoreLinkTarget();
+    }
 
-        return $legacyLink;
+    public function getLinkTarget(): ?CoreLink
+    {
+        return $this->getDerivedLinkTarget();
     }
 }

@@ -17,15 +17,7 @@ This module provides two content elements for us in an elemental area
 
 ## Link migration
 
-This version includes [staged migration of links](https://github.com/nswdpc/silverstripe-linkfield/blob/feat-link-migrator-staged/docs/en/migration.md) to the core Silverstripe Link model.
-
-1. *Important*: Prefix all calls to `FeatureLink`, `LinkTarget` with `Derived` - this will return the link based on the migration state.
-2. Once the above change is available on your site, in the "Link migration" admin section any existing links will show with a  "Migrate" button
-3. Hit the "Migrate" button
-4. Records will migrate to the core Silverstripe Link model and the element interface will display the core Silverstripe link field once the record is republished.
-5. Template usage on site frontend will pick up the new, core, link.
-
-The next major release of this module will remove dependency of `nswdpc/silverstripe-linkfield` and legacy linkfield implementation.
+If you are migrating from 2.0, go through 2.1 first to get a staged migration of links (2.0 -> 2.1 -> 3.0)
 
 ## Installation
 
